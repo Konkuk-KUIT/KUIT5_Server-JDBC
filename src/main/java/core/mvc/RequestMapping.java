@@ -1,9 +1,18 @@
 package core.mvc;
 
-import jwp.controller.*;
-
 import java.util.HashMap;
 import java.util.Map;
+import jwp.controller.CreateUserController;
+import jwp.controller.HomeController;
+import jwp.controller.ListUserController;
+import jwp.controller.LoginController;
+import jwp.controller.LogoutController;
+import jwp.controller.UpdateUserController;
+import jwp.controller.UpdateUserFormController;
+import jwp.controller.qna.AddAnswerController;
+import jwp.controller.qna.CreateQuestionController;
+import jwp.controller.qna.CreateQuestionFormController;
+import jwp.controller.qna.ShowController;
 
 public class RequestMapping {
 
@@ -22,8 +31,11 @@ public class RequestMapping {
         controllers.put("/user/loginForm", new ForwardController("/user/login.jsp"));
         controllers.put("/user/loginFailed", new ForwardController("/user/loginFailed.jsp"));
 
-        controllers.put("/qna/form", new ForwardController("/qna/form.jsp"));
-        controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
+        controllers.put("/qna/form", new CreateQuestionFormController());
+        controllers.put("/qna/create", new CreateQuestionController());
+        controllers.put("/qna/show", new ShowController());
+
+        controllers.put("/api/qna/addAnswer", new AddAnswerController());
 
     }
 
