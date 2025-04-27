@@ -20,14 +20,14 @@ public class UserDao {
             }
 
             @Override
-            public void setValues(User user, PreparedStatement preparedStatement) throws SQLException {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 preparedStatement.setString(1, user.getUserId());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getName());
                 preparedStatement.setString(4, user.getEmail());
             }
         };
-        jdbcTemplate.update(user);
+        jdbcTemplate.update();
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -69,13 +69,13 @@ public class UserDao {
             }
 
             @Override
-            public void setValues(User user, PreparedStatement preparedStatement) throws SQLException {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 preparedStatement.setString(1, user.getPassword());
                 preparedStatement.setString(2, user.getName());
                 preparedStatement.setString(3, user.getEmail());
             }
         };
-        jdbcTemplate.update(user);
+        jdbcTemplate.update();
     }
 
     public List<User> findAll() throws SQLException {
