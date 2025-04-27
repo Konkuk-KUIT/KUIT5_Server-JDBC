@@ -25,6 +25,7 @@ public class ConnectionManager {
         return ds;
     }
 
+    // db 연결 (Connection 객체 생성)
     public static Connection getConnection() {
         try {
             return getDataSource().getConnection();

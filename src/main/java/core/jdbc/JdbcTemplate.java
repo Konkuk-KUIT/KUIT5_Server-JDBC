@@ -1,7 +1,5 @@
 package core.jdbc;
 
-import jwp.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,14 +17,14 @@ public class JdbcTemplate {
         }
     }
 
-    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+    public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper) throws SQLException {
         try(Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ){
             preparedStatementSetter.setValues(preparedStatement);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()){
-                List result  = new ArrayList<>();
+                List<T> result  = new ArrayList<>();
                 while(resultSet.next()){
                     result.add(rowMapper.mapRow(resultSet));
                 }
@@ -36,15 +34,11 @@ public class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper)throws SQLException {
-        List result = query(sql,preparedStatementSetter,rowMapper);
+    public <T> T queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper)throws SQLException {
+        List<T> result = query(sql,preparedStatementSetter,rowMapper);
         if(result.size()==0){
             return null;
         }
         return result.get(0);
     }
-
-//    public abstract String createdQuery();
-//    public abstract void setValues(PreparedStatement preparedStatement) throws SQLException;
-//    public abstract Object mapRow(ResultSet resultSet) throws SQLException;
 }
