@@ -13,6 +13,7 @@ public class ConnectionManager {
     private static final String DB_PW = "";
 
     private static BasicDataSource ds;
+    // 데이터 소스 생성
     public static DataSource getDataSource() {
         if (ds == null) {
             ds = new BasicDataSource();
