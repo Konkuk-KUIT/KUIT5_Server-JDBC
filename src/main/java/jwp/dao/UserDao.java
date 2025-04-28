@@ -8,31 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.jdbc.ConnectionManager;
+import core.jdbc.JdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
 
-        try{
-            String sql = "INSERT INTO Users VALUES (?, ?, ?, ?)";
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            @Override
+            public String createQuery() {
+                return "INSERT INTO Users VALUES (?, ?, ?, ?)";
+            }
 
-            preparedStatement.setString(1, user.getUserId());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getName());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.executeUpdate();
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+            }
+        };
 
-        } finally {
-            if (preparedStatement != null)
-                preparedStatement.close();
-            if (connection != null)
-                connection.close();
-        }
-
+        jdbcTemplate.update();
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -68,27 +65,21 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
 
-        try{
-            String sql = "UPDATE Users SET UserId = ?, Password = ?, Name = ?, Email = ? WHERE UserId = ?";
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            @Override
+            public String createQuery() {
+                return "UPDATE Users SET password = ?, name = ?, email = ? ";
+            }
 
-            preparedStatement.setString(1, user.getUserId());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getName());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getUserId());
-            preparedStatement.executeUpdate();
-
-        } finally {
-            if (preparedStatement != null)
-                preparedStatement.close();
-            if (connection != null)
-                connection.close();
-        }
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getPassword());
+                preparedStatement.setString(2, user.getName());
+                preparedStatement.setString(3, user.getEmail());
+            }
+        };
+        jdbcTemplate.update();
     }
 
     public List<User> findAll() throws SQLException {
