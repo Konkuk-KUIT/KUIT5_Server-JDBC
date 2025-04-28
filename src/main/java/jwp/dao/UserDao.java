@@ -11,8 +11,9 @@ import core.jdbc.RowMapper;
 import jwp.model.User;
 
 public class UserDao {
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     public void insert(User user) throws SQLException {
-        JdbcTemplate jdbcTemplete = new JdbcTemplate();
+
         String sql = "INSERT INTO USERS VALUES(?, ?, ?, ?)";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
@@ -24,11 +25,10 @@ public class UserDao {
             }
         };
 
-        jdbcTemplete.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter);
     }
         
     public User findByUserId(String userId) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM USERS WHERE userId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
@@ -51,7 +51,6 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        JdbcTemplate jdbcTemplete = new JdbcTemplate();
         String sql = "UPDATE USERS SET userId = ?, password = ?, name = ?, email = ? WHERE userId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
@@ -63,11 +62,10 @@ public class UserDao {
                 preparedStatement.setString(5, user.getUserId());
             }
         };
-        jdbcTemplete.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter);
     }
 
     public List<User> findAll() throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM USERS";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
