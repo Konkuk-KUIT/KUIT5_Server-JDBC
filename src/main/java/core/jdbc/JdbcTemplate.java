@@ -1,6 +1,7 @@
 package core.jdbc;
 
 import jwp.model.User;
+import org.springframework.dao.DataAccessException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,88 +11,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//
-//        try {
-//            connection = ConnectionManager.getConnection();
-//            preparedStatement = connection.prepareStatement(sql);
-//
-////            preparedStatement.setString(1, user.getUserId());
-//            preparedStatementSetter.setValues(preparedStatement);
-//            preparedStatement.executeUpdate();
-//        } finally {
-//            if (preparedStatement != null) {
-//                preparedStatement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }
-
-        Connection connection = ConnectionManager.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatementSetter.setValues(preparedStatement);
-        try (preparedStatement) {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException{
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//
-//        try {
-//            connection = ConnectionManager.getConnection();
-//            preparedStatement = connection.prepareStatement(sql);
-//            preparedStatementSetter.setValues(preparedStatement);
-//
-//            // select할 때 실행되어야 하는것.
-//            resultSet = preparedStatement.executeQuery();
-//            List result = new ArrayList<>();
-//            while (resultSet.next()) {
-//                result.add(rowMapper.mapRow(resultSet));
-//            }
-//            return result;
-//        } finally {
-//            if (resultSet != null) {
-//                resultSet.close();
-//            }
-//            if (preparedStatement != null) {
-//                preparedStatement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }
+    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper){
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-        Connection connection = ConnectionManager.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatementSetter.setValues(preparedStatement);
-
-        try (preparedStatement) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List result = new ArrayList<>();
-            while (resultSet.next()) {
-                result.add(rowMapper.mapRow(resultSet));
+            preparedStatementSetter.setValues(preparedStatement);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List result = new ArrayList<>();
+                while (resultSet.next()) {
+                    result.add(rowMapper.mapRow(resultSet));
+                }
+                return result;
             }
-            return result;
+        } catch (SQLException e) {
+            // SQLException : checked exception(반드시 catch하거나 throws해야 하는 예외)
+            // 그래서 unchecked exception의 한 종류인 RuntimeException으로 바꿔서 던지기
+            throw new RuntimeException(e);
         }
     }
 
-    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
         List result = query(sql, preparedStatementSetter, rowMapper);
         if (result.size() == 0) {
             return null;
         }
         return result.get(0);
     }
-
-//    public abstract void setValues(PreparedStatement preparedStatement) throws SQLException;
-//
-//    public abstract String createQuery();
-//
-//    public abstract Object mapRow(ResultSet resultSet) throws SQLException;
 }
