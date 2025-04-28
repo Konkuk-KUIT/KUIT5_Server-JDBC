@@ -2,7 +2,6 @@ package jwp.model;
 
 
 import core.jdbc.ConnectionManager;
-import java.sql.SQLException;
 import java.util.List;
 import jwp.dao.UserDao;
 import org.junit.jupiter.api.Assertions;
@@ -62,10 +61,6 @@ public class UserDaoTest {
     private static void saveUser() {
         User user = new User("kongoose", "password", "name", "javajigi@email.com");
         UserDao userDao = new UserDao();
-        try {
-            userDao.insert(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDao.insert(user);
     }
 }
