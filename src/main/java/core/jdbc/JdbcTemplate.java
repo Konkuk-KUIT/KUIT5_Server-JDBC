@@ -1,5 +1,7 @@
 package core.jdbc;
 
+import jwp.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +24,7 @@ public class JdbcTemplate {
         }
     }
 
-    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper){
+    public List<User> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper){
 
         try(Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
@@ -30,7 +32,7 @@ public class JdbcTemplate {
             preparedStatementSetter.setValues(preparedStatement);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()){
-                List result = new ArrayList<>();
+                List<User> result = new ArrayList<>();
 
                 while (resultSet.next()) {
                     result.add(rowMapper.mapRow(resultSet));
@@ -44,8 +46,8 @@ public class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
-        List result = query(sql, preparedStatementSetter, rowMapper);
+    public User queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
+        List<User> result = query(sql, preparedStatementSetter, rowMapper);
         if (result.isEmpty())
             return null;
         return result.get(0);
