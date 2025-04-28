@@ -13,6 +13,18 @@ import jwp.model.User;
 public class UserDao {
 
     JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static UserDao userDao;
+
+    private UserDao() {
+    }
+
+    public static UserDao getInstance() {
+        if (userDao == null) {
+            userDao = new UserDao();
+            return userDao;
+        }
+        return userDao;
+    }
 
     public void insert(User user){
         String sql = "INSERT INTO Users Values (?, ?, ?, ?)";
