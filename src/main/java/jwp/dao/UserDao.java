@@ -8,22 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.jdbc.ConnectionManager;
-import core.jdbc.InsertJdbcTemplate;
-import core.jdbc.UpdateJdbcTemplate;
+import core.jdbc.JdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        InsertJdbcTemplate jdbcTemplate = new InsertJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
-            public String createQueryForInsert() {
+            public String createQuery() {
                 return "INSERT INTO Users VALUES (?, ?, ?, ?)";
-
             }
 
             @Override
-            public void setValuesForInsert(User user, PreparedStatement preparedStatement) throws SQLException {
-
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 preparedStatement.setString(1, user.getUserId());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getName());
@@ -31,7 +28,7 @@ public class UserDao {
             }
         };
 
-        jdbcTemplate.insert(user);
+        jdbcTemplate.update();
 
     }
 
@@ -72,13 +69,14 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
-            public String createQueryForUpdate() {
+            public String createQuery() {
                 return "UPDATE Users SET password = ? ,name = ?, email = ? WHERE userId = ?";
             }
+
             @Override
-            public void setValuesForUpdate(User user, PreparedStatement preparedStatement) throws SQLException {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 preparedStatement.setString(1, user.getPassword());
                 preparedStatement.setString(2, user.getName());
                 preparedStatement.setString(3, user.getEmail());
@@ -86,7 +84,7 @@ public class UserDao {
             }
         };
 
-        jdbcTemplate.update(user);
+        jdbcTemplate.update();
     }
 
     public List<User> findAll() throws SQLException {
