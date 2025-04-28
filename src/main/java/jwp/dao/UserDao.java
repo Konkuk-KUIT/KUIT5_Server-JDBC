@@ -26,7 +26,7 @@ public class UserDao {
 
     public User findByUserId(String userId){
         String sql = "SELECT * FROM Users WHERE userId = ?";
-        return (User) jdbcTemplate.queryForObject(sql,
+        return jdbcTemplate.queryForObject(sql,
                 preparedStatement -> {preparedStatement.setString(1, userId);},
                 resultSet -> { return new User(
                         resultSet.getString("userId"),
@@ -48,7 +48,7 @@ public class UserDao {
 
     public List<User> findAll(){
         String sql = "SELECT * FROM Users";
-        return (List<User>) jdbcTemplate.query(sql, preparedStatement -> {},
+        return jdbcTemplate.query(sql, preparedStatement -> {},
                 resultSet -> { return new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
