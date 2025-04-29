@@ -11,12 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class ListUserController implements Controller {
-
+    private final UserDao userDao = new UserDao();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         if (UserSessionUtils.isLogined(session)) {
-            UserDao userDao = new UserDao();
             req.setAttribute("users", userDao.findAll());
             return "/user/list.jsp";
         }

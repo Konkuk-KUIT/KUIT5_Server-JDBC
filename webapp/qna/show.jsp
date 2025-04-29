@@ -4,6 +4,7 @@
 <!doctype html>
 <html lang="ko">
 <%@ include file="/include/header.jspf" %>
+<
 <body>
 <%@ include file="/include/navigation.jspf" %>
 
@@ -69,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="article-doc comment-doc">
-                                <p>${each.content}</p>
+                                <p>${each.contents}</p>
                             </div>
                             <div class="article-util">
                                 <ul class="article-util-list">
@@ -89,12 +90,16 @@
                     </c:forEach>
                     <div class="answerWrite">
                         <form class="submit-write">
-													<div class="form-group" style="padding:14px;">
-														<textarea class="form-control" placeholder="Update your status"></textarea>
-													</div>
-													<button class="btn btn-primary pull-right" type="button">답변하기</button>
-													<div class="clearfix" />
-												</form>
+                        	<input type="hidden" name="questionId" value="${question.questionId}">
+                        	<div class="form-group col-lg-4" style="padding-top:10px;">
+                        		<input class="form-control" id="writer" name="writer" placeholder="이름">
+                        	</div>
+                        	<div class="form-group col-lg-12">
+                        		<textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
+                        	</div>
+                        		<input class="btn btn-success pull-right" type="submit" value="답변하기" />
+                        	<div class="clearfix" />
+                        </form>
                     </div>
 
                 </div>
@@ -135,5 +140,7 @@
 <script src="/js/jquery-2.2.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/scripts.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/addAnswer.js"></script>
 </body>
 </html>

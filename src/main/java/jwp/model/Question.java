@@ -1,5 +1,6 @@
 package jwp.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Question {
@@ -43,11 +44,21 @@ public class Question {
         return contents;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public Timestamp getCreatedDate() {
+        return Timestamp.valueOf(createdDate);
     }
 
     public int getCountOfAnswer() {
         return countOfAnswer;
+    }
+
+    public void increaseCountOfAnswer() {
+        countOfAnswer ++;
+    }
+
+    public void decreaseCountOfAnswer() {
+        if(countOfAnswer > 0){
+            countOfAnswer--;
+        }
     }
 }

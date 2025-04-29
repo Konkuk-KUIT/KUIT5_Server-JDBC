@@ -22,8 +22,19 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
+
+        if(controller == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         try {
             String viewName = controller.execute(req, resp);
+
+            if(viewName == null || viewName.isEmpty()) {
+                return;
+            }
+
             move(viewName, req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());

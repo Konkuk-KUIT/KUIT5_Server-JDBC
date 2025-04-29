@@ -27,13 +27,11 @@ public class QuestionDao {
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
-
-
                 preparedStatement.setString(1, question.getWriter());
                 preparedStatement.setString(2, question.getTitle());
                 preparedStatement.setString(3, question.getContents());
-                preparedStatement.setString(4, Timestamp.valueOf(question.getCreatedDate()).toString());
-                preparedStatement.setString(5, Integer.toString(question.getCountOfAnswer()));
+                preparedStatement.setTimestamp(4, question.getCreatedDate());
+                preparedStatement.setInt(5, question.getCountOfAnswer());
             }
         };
 
@@ -55,39 +53,51 @@ public class QuestionDao {
             @Override
             public Object mapRow(ResultSet resultSet) throws SQLException {
                 return new Question(
-                        Long.parseLong(resultSet.getString("questionId")),
+                        resultSet.getLong("questionId"),
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
                         resultSet.getTimestamp("createdDate").toLocalDateTime(),
-                        Integer.parseInt(resultSet.getString("countOfAnswer"))
+                        resultSet.getInt("countOfAnswer")
                 );
             }
         };
         return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
-//
-//    public void update(Question question) throws SQLException {
-//        JdbcTemplate jdbcTemplete = new JdbcTemplate();
-//        String sql = "UPDATE USERS SET questionId = ?, writer = ?, title = ?, contents = ?, createdDate = ?, countOfAnswer = ? WHERE questionId = ?";
-//        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
-//            @Override
-//            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-//                preparedStatement.setString(1, Long.toString(question.getQuestionId()));
-//                preparedStatement.setString(2, question.getWriter());
-//                preparedStatement.setString(3, question.getTitle());
-//                preparedStatement.setString(4, question.getContents());
-//                preparedStatement.setString(5, question.getCreatedDate().toString());
-//                preparedStatement.setString(6, Integer.toString(question.getCountOfAnswer()));
-//                preparedStatement.setString(7, Long.toString(question.getQuestionId()));
-//            }
-//        };
-//        jdbcTemplete.update(sql, preparedStatementSetter);
-//    }
+
+    public void update(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplete = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS SET questionId = ?, writer = ?, title = ?, contents = ?, createdDate = ?, countOfAnswer = ? WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setLong(1, question.getQuestionId());
+                preparedStatement.setString(2, question.getWriter());
+                preparedStatement.setString(3, question.getTitle());
+                preparedStatement.setString(4, question.getContents());
+                preparedStatement.setTimestamp(5, question.getCreatedDate());
+                preparedStatement.setInt(6, question.getCountOfAnswer());
+                preparedStatement.setLong(7, question.getQuestionId());
+            }
+        };
+        jdbcTemplete.update(sql, preparedStatementSetter, null);
+    }
+
+    public void updateCountOfAnswer(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplete = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, question.getCountOfAnswer());
+                preparedStatement.setLong(2, question.getQuestionId());
+            }
+        };
+        jdbcTemplete.update(sql, preparedStatementSetter, null);
+    }
 
     public List<Question> findAll() throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "SELECT * FROM Questions";
+        String sql = "SELECT * FROM QUESTIONS";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
@@ -97,12 +107,12 @@ public class QuestionDao {
             @Override
             public Object mapRow(ResultSet resultSet) throws SQLException {
                 return new Question(
-                        Long.parseLong(resultSet.getString("questionId")),
+                        resultSet.getLong("questionId"),
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
                         resultSet.getTimestamp("createdDate").toLocalDateTime(),
-                        Integer.parseInt(resultSet.getString("countOfAnswer"))
+                        resultSet.getInt("countOfAnswer")
                 );
             }
         };
