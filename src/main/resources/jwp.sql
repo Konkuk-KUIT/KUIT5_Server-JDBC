@@ -75,3 +75,8 @@ INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES
     ('이윤정',
      '저도여 ㅠㅜ',
      CURRENT_TIMESTAMP(), 1);
+
+ INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES
+     ('박민주',
+      '죽겠네여~',
+      CURRENT_TIMESTAMP(), 1);

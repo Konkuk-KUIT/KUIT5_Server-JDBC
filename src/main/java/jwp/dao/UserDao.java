@@ -1,26 +1,88 @@
 package jwp.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
+import core.jdbc.JdbcTemplate;
+import core.jdbc.PreparedStatementSetter;
+import core.jdbc.RowMapper;
 import jwp.model.User;
 
 public class UserDao {
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     public void insert(User user) throws SQLException {
-        //TODO 구현 하기
-    }
 
+        String sql = "INSERT INTO USERS VALUES(?, ?, ?, ?)";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+            }
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
+    }
+        
     public User findByUserId(String userId) throws SQLException {
-        //TODO 구현 하기
-        return null;
+        String sql = "SELECT * FROM USERS WHERE userId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, userId);
+            }
+        };
+        RowMapper rowMapper = new RowMapper() {
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return new User(
+                        resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email")
+                );
+            }
+        };
+        return (User) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 
     public void update(User user) throws SQLException {
-        //TODO 구현 하기
+        String sql = "UPDATE USERS SET userId = ?, password = ?, name = ?, email = ? WHERE userId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+                preparedStatement.setString(5, user.getUserId());
+            }
+        };
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
     }
 
     public List<User> findAll() throws SQLException {
-        //TODO 구현 하기
-        return new ArrayList<>();
+        String sql = "SELECT * FROM USERS";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+            }
+        };
+        RowMapper rowMapper = new RowMapper() {
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return new User(
+                        resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email")
+                );
+            }
+        };
+        return(List<User>)jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
 }
