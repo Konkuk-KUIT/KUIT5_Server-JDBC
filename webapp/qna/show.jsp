@@ -64,9 +64,9 @@
                                 </div>
                                 <div class="article-header-text">
                                         ${each.writer}
-                                    <div class="article-header-time">
+                                    <!-- <div class="article-header-time">
                                         <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="article-doc comment-doc">
