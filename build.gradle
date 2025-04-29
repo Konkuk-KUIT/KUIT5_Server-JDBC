@@ -44,6 +44,27 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
 }
 
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+tasks.named('processResources') {
+    doLast {
+        copy {
+            from 'src/main/resources'
+            into 'webapp/WEB-INF/classes'
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
 }

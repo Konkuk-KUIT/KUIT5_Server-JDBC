@@ -20,6 +20,14 @@ public class Question {
         this.countOfAnswer = countOfAnswer;
     }
 
+    public Question(String writer, String title, String contents, LocalDateTime createdDate, int countofAnswer) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.countOfAnswer = countOfAnswer;
+    }
+
     public void setQuestionId(long questionId) {
         this.questionId = questionId;
     }

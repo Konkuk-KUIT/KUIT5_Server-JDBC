@@ -1,5 +1,6 @@
 package core.jdbc;
 
+import jwp.model.KeyHolder;
 import jwp.model.User;
 import org.springframework.dao.DataAccessException;
 
@@ -14,6 +15,27 @@ public class JdbcTemplate {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder keyHolder) {
+        // DB 커넥션 열기
+        try (Connection connection = ConnectionManager.getConnection();
+             // SQL 실행 준비
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            // setter로 값 세팅
+            preparedStatementSetter.setValues(preparedStatement);
+            // 쿼리 실행
+            preparedStatement.executeUpdate();
+
+            // 생성된 키를 꺼내서 이동하고, getLong(1)으로 첫 번째 키 값을 읽어와서 KeyHolder에 넣어주기
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                keyHolder.setId(generatedKeys.getLong(1));
+            }
+            generatedKeys.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

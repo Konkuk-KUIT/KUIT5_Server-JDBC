@@ -15,6 +15,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 public class UserDaoTest {
 
     User user = new User("kongoose", "password", "건구스", "Kongoose@email.com");
+    //User user = new User("kongoose", "password", "name", "javajigi@email.com");
 
     @BeforeEach
     public void setup() {
