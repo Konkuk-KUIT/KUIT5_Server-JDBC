@@ -1,7 +1,5 @@
 package core.jdbc;
 
-import jwp.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
