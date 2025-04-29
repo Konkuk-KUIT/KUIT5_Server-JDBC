@@ -29,6 +29,6 @@ public class CreateQuestionController implements Controller {
         QuestionDao questionDao = new QuestionDao();
         question = questionDao.insert(question);
         System.out.println("question 생성 완료" + question.getQuestionId());
-        return "redirect:/qna/list";
+        return "redirect:/";
     }
 }
