@@ -31,7 +31,7 @@ public class UserDao {
         PreparedStatementSetter preparedStatementSetter = preparedStatement ->
                 preparedStatement.setString(1, userId);
 
-        RowMapper rowMapper = resultSet -> new User(resultSet.getString("userId"),
+        RowMapper<User> rowMapper = resultSet -> new User(resultSet.getString("userId"),
                 resultSet.getString("password"),
                 resultSet.getString("name"),
                 resultSet.getString("email")
@@ -61,7 +61,7 @@ public class UserDao {
 
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> {};
 
-        RowMapper rowMapper = resultSet -> new User(resultSet.getString("userId"),
+        RowMapper<User> rowMapper = resultSet -> new User(resultSet.getString("userId"),
                 resultSet.getString("password"),
                 resultSet.getString("name"),
                 resultSet.getString("email")
