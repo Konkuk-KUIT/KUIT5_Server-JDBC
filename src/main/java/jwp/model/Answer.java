@@ -7,10 +7,10 @@ public class Answer {
     private Long answerId;
     private String writer;
     private String contents;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private Long questionId;
 
-    public Answer(Long answerId, String writer, String contents, LocalDateTime createdDate, Long questionId) {
+    public Answer(Long answerId, String writer, String contents, Timestamp createdDate, Long questionId) {
         this.answerId = answerId;
         this.writer = writer;
         this.contents = contents;
@@ -18,12 +18,12 @@ public class Answer {
         this.questionId = questionId;
     }
 
-    public Answer(String writer, String contents, LocalDateTime createdDate, Long questionId) {
+    public Answer(String writer, String contents, Timestamp createdDate, Long questionId) {
         this(-1L, writer, contents, createdDate, questionId);
     }
 
     public Answer(Long questionId, String writer, String contents) {
-        this(-1L, writer, contents, LocalDateTime.now(), questionId);
+        this(-1L, writer, contents, Timestamp.valueOf(LocalDateTime.now()), questionId);
     }
 
     public Long getAnswerId() {
@@ -39,7 +39,7 @@ public class Answer {
     }
 
     public Timestamp getCreatedDate() {
-        return Timestamp.valueOf(createdDate);
+        return createdDate;
     }
 
     public Long getQuestionId() {

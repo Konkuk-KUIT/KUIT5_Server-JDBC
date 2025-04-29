@@ -57,7 +57,7 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate").toLocalDateTime(),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer")
                 );
             }
@@ -111,7 +111,7 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate").toLocalDateTime(),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer")
                 );
             }

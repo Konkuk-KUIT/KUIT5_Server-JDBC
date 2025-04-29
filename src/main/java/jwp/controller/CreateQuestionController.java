@@ -8,6 +8,7 @@ import jwp.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class CreateQuestionController implements Controller {
@@ -24,7 +25,7 @@ public class CreateQuestionController implements Controller {
                 req.getParameter("writer"),
                 req.getParameter("title"),
                 req.getParameter("contents"),
-                LocalDateTime.now()
+                Timestamp.valueOf(LocalDateTime.now())
         );
         QuestionDao questionDao = new QuestionDao();
         question = questionDao.insert(question);

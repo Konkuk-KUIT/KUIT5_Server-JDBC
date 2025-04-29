@@ -8,10 +8,10 @@ public class Question {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private int countOfAnswer;
 
-    public Question(Long questionId, String writer, String title, String  contents, LocalDateTime createdDate, int countOfAnswer) {
+    public Question(Long questionId, String writer, String title, String  contents, Timestamp createdDate, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
@@ -20,7 +20,7 @@ public class Question {
         this.countOfAnswer = countOfAnswer;
     }
 
-    public  Question(String writer, String title, String  contents, LocalDateTime createdDate){
+    public  Question(String writer, String title, String  contents, Timestamp createdDate){
         this(-1L, writer, title, contents, createdDate, 0);
     }
 
@@ -45,7 +45,7 @@ public class Question {
     }
 
     public Timestamp getCreatedDate() {
-        return Timestamp.valueOf(createdDate);
+        return createdDate;
     }
 
     public int getCountOfAnswer() {

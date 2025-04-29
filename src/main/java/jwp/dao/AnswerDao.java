@@ -53,7 +53,7 @@ public class AnswerDao {
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate").toLocalDateTime(),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getLong("questionId")
                 );
             }
@@ -90,7 +90,7 @@ public class AnswerDao {
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate").toLocalDateTime(),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getLong("questionId")
                 );
             }
@@ -113,7 +113,7 @@ public class AnswerDao {
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate").toLocalDateTime(),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getLong("questionId")
                 );
             }
