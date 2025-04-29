@@ -1,26 +1,149 @@
 package jwp.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import core.jdbc.ConnectionManager;
 import jwp.model.User;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        //TODO 구현 하기
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try{
+            String sql = "INSERT INTO Users VALUES (?, ?, ?, ?)";
+            connection = ConnectionManager.getConnection();
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, user.getUserId());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setString(4, user.getEmail());
+
+            preparedStatement.executeUpdate();
+        } finally {
+            if (connection != null){
+                connection.close();
+            }
+            if(preparedStatement != null){
+                preparedStatement.close();
+            }
+        }
+
     }
 
     public User findByUserId(String userId) throws SQLException {
         //TODO 구현 하기
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM Users WHERE userID = ?";
+
+        try{
+            connection = ConnectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userId);
+            resultSet = preparedStatement.executeQuery();
+
+            User user = null;
+
+            if(resultSet.next()){
+                user = new User(
+                        resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"));
+
+                return user;
+            }
+
+        } finally {
+            if (connection != null){
+                connection.close();
+            }
+            if(preparedStatement != null){
+                preparedStatement.close();
+            }
+            if(resultSet != null){
+                resultSet.close();
+            }
+        }
+
         return null;
     }
 
     public void update(User user) throws SQLException {
         //TODO 구현 하기
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try{
+            String sql = "UPDATE Users SET password = ?, name = ?, email = ? WHERE userId = ?";
+            connection = ConnectionManager.getConnection();
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(4, user.getUserId());
+            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getEmail());
+
+
+            preparedStatement.executeUpdate();
+        } finally {
+            if (connection != null){
+                connection.close();
+            }
+            if(preparedStatement != null){
+                preparedStatement.close();
+            }
+        }
     }
 
     public List<User> findAll() throws SQLException {
         //TODO 구현 하기
-        return new ArrayList<>();
+
+        List<User> users = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM Users";
+
+        try{
+            connection = ConnectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()){
+                User user = new User(
+                        resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"));
+
+                users.add(user);
+            }
+
+        } finally {
+            if (connection != null){
+                connection.close();
+            }
+            if(preparedStatement != null){
+                preparedStatement.close();
+            }
+            if(resultSet != null){
+                resultSet.close();
+            }
+        }
+
+        return users;
     }
 }
