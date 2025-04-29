@@ -18,7 +18,7 @@ function onSuccess(json, status) {
     var answerTemplate = $("#answerTemplate").html();
     var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId, json.answerId);
     $(".qna-comment-kuit-articles").prepend(template);
-    var countOfAnswer = document.getElementByTagName("strong").item(0);
+    var countOfAnswer = document.getElementsByTagName("strong").item(0);
     let number = parseInt(countOfAnswer.innerText, 10);
     number += 1;
     countOfAnswer.textContent = number.toString();
