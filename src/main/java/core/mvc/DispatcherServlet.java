@@ -1,5 +1,6 @@
 package core.mvc;
 
+import core.mvc.view.ModelAndView;
 import core.mvc.view.View;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -23,8 +24,9 @@ public class DispatcherServlet extends HttpServlet {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
         try {
-            View view = controller.execute(req, resp);
-            view.render(req, resp);
+            ModelAndView modelAndView = controller.execute(req, resp);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(), req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ServletException(e.getMessage());
