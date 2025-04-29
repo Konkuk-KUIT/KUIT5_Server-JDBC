@@ -42,12 +42,13 @@ public class UserDao {
     public void update(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        String sql = "UPDATE Users SET password = ?, name = ?, email = ? ";
+        String sql = "UPDATE Users SET password = ?, name = ?, email = ? WHERE userId = ?";
 
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getUserId());
         };
 
         jdbcTemplate.update(sql, preparedStatementSetter);
