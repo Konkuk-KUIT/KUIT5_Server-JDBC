@@ -25,7 +25,7 @@ public class UserDao {
             }
         };
 
-        jdbcTemplate.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
     }
         
     public User findByUserId(String userId) throws SQLException {
@@ -62,7 +62,7 @@ public class UserDao {
                 preparedStatement.setString(5, user.getUserId());
             }
         };
-        jdbcTemplate.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
     }
 
     public List<User> findAll() throws SQLException {

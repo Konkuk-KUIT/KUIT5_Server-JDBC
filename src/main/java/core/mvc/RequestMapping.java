@@ -22,9 +22,10 @@ public class RequestMapping {
         controllers.put("/user/loginForm", new ForwardController("/user/login.jsp"));
         controllers.put("/user/loginFailed", new ForwardController("/user/loginFailed.jsp"));
 
-        controllers.put("/qna/form", new ForwardController("/qna/form.jsp"));
+        controllers.put("/qna/form", new CreateQuestionFormController());
         controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
-
+        controllers.put("/qna/create", new CreateQuestionController());
+        controllers.put("/qna/list", new ForwardController("/"));
     }
 
     public Controller getController(String url) {

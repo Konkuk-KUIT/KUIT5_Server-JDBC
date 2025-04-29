@@ -3,18 +3,26 @@ package jwp.dao;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
+import jwp.model.KeyHolder;
 import jwp.model.Question;
 import jwp.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class QuestionDao {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    public void insert(Question question) throws SQLException {
+    private KeyHolder keyHolder = new KeyHolder();
+
+    public KeyHolder getKeyHolder() {
+        return keyHolder;
+    }
+
+    public Question insert(Question question) throws SQLException {
         String sql = "INSERT INTO QUESTIONS(writer, title, contents, createdDate, countOfAnswer) VALUES(?, ?, ?, ?, ?)";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
@@ -24,15 +32,17 @@ public class QuestionDao {
                 preparedStatement.setString(1, question.getWriter());
                 preparedStatement.setString(2, question.getTitle());
                 preparedStatement.setString(3, question.getContents());
-                preparedStatement.setString(4, question.getCreatedDate().toString());
+                preparedStatement.setString(4, Timestamp.valueOf(question.getCreatedDate()).toString());
                 preparedStatement.setString(5, Integer.toString(question.getCountOfAnswer()));
             }
         };
 
-        jdbcTemplate.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
+
+        return findByQuestionId(keyHolder.getKey().toString());
     }
 
-    public User findByQuestionId(String questionId) throws SQLException {
+    public Question findByQuestionId(String questionId) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM QUESTIONS WHERE questionId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
@@ -54,7 +64,7 @@ public class QuestionDao {
                 );
             }
         };
-        return (User) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 //
 //    public void update(Question question) throws SQLException {

@@ -1,5 +1,6 @@
 package core.jdbc;
 
+import jwp.model.KeyHolder;
 import jwp.model.User;
 
 import java.sql.Connection;
@@ -10,10 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder keyHolder) {
+        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+            if(keyHolder != null) {
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if (rs.next()) {
+                    keyHolder.setKey((Long) rs.getLong(1));
+                }
+                rs.close();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
