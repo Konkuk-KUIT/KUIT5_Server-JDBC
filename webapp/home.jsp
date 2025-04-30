@@ -20,7 +20,7 @@
                         <div class="auth-info">
                             <i class="icon-add-comment"></i>
                             <span class="time">2025-03-29 22:11</span>
-                            <span clas="author">박지원</span>
+                            <span class="author">이채유</span>
                             <!-- <a href="./user/profile.html" class="author">이영선</a> -->
                         </div>
                         <div class="reply" title="댓글">

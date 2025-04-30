@@ -26,6 +26,7 @@ public class RequestMapping {
         controllers.put("/qna/form", new CreateQuestionFormController());
 //        controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
         controllers.put("/qna/show", new ShowQuestionController());
+        controllers.put("/qna/create", new CreateQuestionController());
 
     }
 
