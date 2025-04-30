@@ -1,6 +1,6 @@
 package jwp.controller.qna;
 
-import core.mvc.AbstractController;
+import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;

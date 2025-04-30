@@ -1,4 +1,4 @@
-package core.mvc;
+package core.mvc.controller;
 
 import core.mvc.view.JsonView;
 import core.mvc.view.JspView;

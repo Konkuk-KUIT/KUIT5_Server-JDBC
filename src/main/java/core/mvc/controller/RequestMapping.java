@@ -1,4 +1,4 @@
-package core.mvc;
+package core.mvc.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import jwp.controller.qna.ShowController;
 
 public class RequestMapping {
 
-    private static final Map<String, Controller> controllers = new HashMap<>();
+    private static final Map<String, core.mvc.controller.Controller> controllers = new HashMap<>();
 
     static {
         controllers.put("/", new HomeController());

@@ -1,7 +1,7 @@
 package jwp.controller;
 
 import core.db.MemoryUserRepository;
-import core.mvc.AbstractController;
+import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
