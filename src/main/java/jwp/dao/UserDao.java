@@ -50,7 +50,7 @@ public class UserDao {
             }
         };
 
-        return (User) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
 
     }
 
@@ -91,7 +91,7 @@ public class UserDao {
             }
         };
 
-        return (List<User>) jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
 
     }
 }
