@@ -11,60 +11,32 @@ import java.util.List;
 
 public class JdbcTemplate {
     public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
 
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+        try (
+                Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatementSetter.setValues(preparedStatement);
-
             preparedStatement.executeUpdate();
-
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
         }
     }
 
     public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-
-        try {
-            List result = new ArrayList<>();
-
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+        try (
+                Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ) {
             preparedStatementSetter.setValues(preparedStatement);
 
-            resultSet = preparedStatement.executeQuery();
-
-
-            while (resultSet.next()) {
-                result.add(rowMapper.mapRow(resultSet));
-            }
-            return result;
-
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List result = new ArrayList<>();
+                while (resultSet.next()) {
+                    result.add(rowMapper.mapRow(resultSet));
+                }
+                return result;
             }
         }
+
     }
 
     public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
@@ -72,7 +44,5 @@ public class JdbcTemplate {
         if (result.isEmpty())
             return null;
         return result.get(0);
-
     }
-
 }
