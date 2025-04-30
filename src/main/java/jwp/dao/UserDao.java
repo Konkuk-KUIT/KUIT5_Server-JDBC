@@ -9,6 +9,7 @@ import java.util.List;
 
 import core.jdbc.ConnectionManager;
 import core.jdbc.JdbcTemplate;
+import core.jdbc.SelectJdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
@@ -33,39 +34,27 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String sql = "SELECT * FROM Users WHERE userId = ?";
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public String createQuery() {
+                return "SELECT * FROM Users WHERE userId = ?";
+            }
 
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, userId);
-            // resultSet: select문 날렸을 때 DB가 준 결과 담는 곳
-            resultSet = preparedStatement.executeQuery();
-
-            User user = null;
-            if (resultSet.next()) {
-                user = new User(resultSet.getString("userId"), resultSet.getString("password"),
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return new User(resultSet.getString("userId"), resultSet.getString("password"),
                         resultSet.getString("name"),
                         resultSet.getString("email"));
-                return user;
-            }
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
             }
 
-            if (connection != null) {
-                connection.close();
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, userId);
             }
-        }
+        };
 
-        return null;
+        return (User) jdbcTemplate.queryForObject();
+
     }
 
     public void update(User user) throws SQLException {
@@ -88,39 +77,27 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        List<User> users = new ArrayList<>();
-        ResultSet resultSet = null;
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public String createQuery() {
+                return "SELECT * FROM Users";
+            }
 
-        String sql = "SELECT * FROM Users";
-
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = new User(resultSet.getString("userId"),
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return new User(resultSet.getString("userId"),
                         resultSet.getString("password"),
                         resultSet.getString("name"),
                         resultSet.getString("email"));
-
-                users.add(user);
             }
 
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
 
-            if (connection != null) {
-                connection.close();
             }
-        }
-        return users;
+        };
+
+        return (List<User>) jdbcTemplate.query();
+
     }
 }
