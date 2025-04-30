@@ -16,10 +16,6 @@ public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
-            public Object mapRow(ResultSet resultSet) throws SQLException {
-                return null;
-            }
-            @Override
             public String createQuery() {
                 return "INSERT INTO Users VALUES (?, ?, ?, ?)";
             }
@@ -38,7 +34,7 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
             @Override
             public String createQuery() {
                 return "SELECT * FROM Users WHERE userId = ?";
@@ -64,11 +60,6 @@ public class UserDao {
     public void update(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
-            public Object mapRow(ResultSet resultSet) throws SQLException {
-                return null;
-            }
-
-            @Override
             public String createQuery() {
                 return "UPDATE Users SET password = ? ,name = ?, email = ? WHERE userId = ?";
             }
@@ -86,7 +77,7 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
             @Override
             public String createQuery() {
                 return "SELECT * FROM Users";
