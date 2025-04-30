@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder keyHolder) throws SQLException {
 
         try (
                 Connection connection = ConnectionManager.getConnection();
@@ -18,6 +18,26 @@ public class JdbcTemplate {
         ) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                keyHolder.setId((int) rs.getLong(1));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
+        try (
+                Connection conn = ConnectionManager.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            preparedStatementSetter.setValues(pstmt);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
