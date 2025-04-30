@@ -8,10 +8,11 @@ import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
 public class CreateQuestionController extends AbstractController {
+    private final QuestionDao questionDao = new QuestionDao();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        QuestionDao questionDao = new QuestionDao();
+
         Question question = new Question(
                 req.getParameter("writer"),
                 req.getParameter("title"),

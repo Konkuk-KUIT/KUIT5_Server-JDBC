@@ -1,5 +1,7 @@
 package jwp.controller.qna;
 
+import core.mvc.Controller;
+import core.mvc.RequestMapping;
 import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -9,17 +11,17 @@ import jwp.dao.QuestionDao;
 import jwp.model.Answer;
 import jwp.model.Question;
 
+@Controller
 public class AddAnswerController extends AbstractController {
-    AnswerDao answerDao = new AnswerDao();
-    QuestionDao questionDao = new QuestionDao();
+    private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionDao questionDao = new QuestionDao();
 
-    @Override
+    @RequestMapping("/api/qna/addAnswer")
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Answer answer = new Answer(Integer.parseInt(req.getParameter("questionId")), req.getParameter("writer"),
                 req.getParameter("contents"));
 
         Answer savedAnswer = answerDao.insert(answer);
-
         Question question = questionDao.findByQuestionId(answer.getQuestionId());
         question.increaseCountOfAnswer();
         questionDao.updateCountOfAnswer(question);

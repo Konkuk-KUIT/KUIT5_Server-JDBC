@@ -9,10 +9,10 @@ import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
 public class HomeController extends AbstractController {
+    private QuestionDao questionDao = new QuestionDao();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        QuestionDao questionDao = new QuestionDao();
         List<Question> questions = questionDao.findAll();
 
         return jspView("/home.jsp").addObject("questions", questions);

@@ -1,7 +1,9 @@
 package core.mvc.controller;
 
+import core.mvc.HandlerMapping;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import jwp.controller.CreateUserController;
 import jwp.controller.HomeController;
 import jwp.controller.ListUserController;
@@ -9,12 +11,11 @@ import jwp.controller.LoginController;
 import jwp.controller.LogoutController;
 import jwp.controller.UpdateUserController;
 import jwp.controller.UpdateUserFormController;
-import jwp.controller.qna.AddAnswerController;
 import jwp.controller.qna.CreateQuestionController;
 import jwp.controller.qna.CreateQuestionFormController;
 import jwp.controller.qna.ShowController;
 
-public class RequestMapping {
+public class RequestMapping implements HandlerMapping {
 
     private static final Map<String, core.mvc.controller.Controller> controllers = new HashMap<>();
 
@@ -35,11 +36,15 @@ public class RequestMapping {
         controllers.put("/qna/create", new CreateQuestionController());
         controllers.put("/qna/show", new ShowController());
 
-        controllers.put("/api/qna/addAnswer", new AddAnswerController());
-
+        //controllers.put("/api/qna/addAnswer", new AddAnswerController());
     }
 
     public Controller getController(String url) {
         return controllers.get(url);
+    }
+
+    @Override
+    public Object getHandler(HttpServletRequest request) {
+        return controllers.get(request.getRequestURI());
     }
 }
