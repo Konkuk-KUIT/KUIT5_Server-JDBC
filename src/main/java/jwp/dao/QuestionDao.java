@@ -84,5 +84,18 @@ public class QuestionDao {
 
         return findByQuestionId(keyHolder.getId());
     }
+
+    public void updateCountOfAnswer(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, question.getCountOfAnswer());
+                preparedStatement.setLong(2, question.getQuestionId());
+            }
+        };
+        jdbcTemplate.update(sql, preparedStatementSetter);
+    }
 }
 

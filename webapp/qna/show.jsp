@@ -89,10 +89,14 @@
                     </c:forEach>
                     <div class="answerWrite">
                         <form class="submit-write">
-                            <div class="form-group" style="padding:14px;">
-                                <textarea class="form-control" placeholder="Update your status"></textarea>
+                            <input type="hidden" name="questionId" value="${question.questionId}">
+                            <div class="form-group col-lg-4" style="padding-top:10px;">
+                                <input class="form-control" id="writer" name="writer" placeholder="이름">
                             </div>
-                            <button class="btn btn-primary pull-right" type="button">답변하기</button>
+                            <div class="form-group col-lg-12">
+                                <textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
+                            </div>
+                            <input class="btn btn-success pull-right" type="submit" value="답변하기" />
                             <div class="clearfix" />
                         </form>
                     </div>
@@ -132,8 +136,51 @@
         </div>
     </article>
 </script>
-<script src="/js/jquery-2.2.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/scripts.js"></script>
+<script>
+    //자바 스크립트
+    $(".answerWrite input[type=submit]").click(addAnswer);
+
+    function addAnswer(e) {
+        e.preventDefault();
+        var queryString = $(".submit-write").serialize();
+
+        $.ajax({
+            type : 'post',
+            url : '/api/qna/addAnswer',
+            data : queryString,
+            dataType : 'json',
+            error: onError,
+            success : onSuccess,
+        });
+    }
+
+    //요청이 성공했을 때 아래 함수를 실행 시킴. 즉, 동적으로 화면 생성
+    function onSuccess(json, status){
+        var answerTemplate = $("#answerTemplate").html();
+        var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId, json.answerId);
+        $(".qna-comment-kuit-articles").prepend(template);
+        var countOfAnswer = document.getElementsByTagName("strong").item(0);
+        let number = parseInt(countOfAnswer.innerText,10);
+        number += 1;
+        countOfAnswer.textContent = number.toString();
+    }
+
+    function onError(xhr, status) {
+        alert("error");
+    }
+
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+</script>
 </body>
 </html>

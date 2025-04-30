@@ -47,4 +47,7 @@ public class Question {
     public int getCountOfAnswer() {
         return countOfAnswer;
     }
+    public void increaseCountOfAnswer(){
+        countOfAnswer++;
+    }
 }

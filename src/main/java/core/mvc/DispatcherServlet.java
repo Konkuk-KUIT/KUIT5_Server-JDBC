@@ -24,6 +24,10 @@ public class DispatcherServlet extends HttpServlet {
         Controller controller = requestMapping.getController(url);
         try {
             String viewName = controller.execute(req, resp);
+            // ajax 요청의 경우 null을 반환할 수도 있기 때문에 null 체크 로직 필요함.
+            if (viewName == null) {
+                return;
+            }
             move(viewName, req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
