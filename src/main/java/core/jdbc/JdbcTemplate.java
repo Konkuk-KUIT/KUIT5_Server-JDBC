@@ -1,24 +1,31 @@
 package core.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
 
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder holder) {
 
         // try-with-resources: 여러 자원을 선언하면 선언된 역순으로 닫힘
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+
+            if (holder != null) {
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if (rs.next()) {
+                    holder.setId(rs.getLong(1));
+                }
+                rs.close();
+            }
+
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,8 +46,7 @@ public class JdbcTemplate {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

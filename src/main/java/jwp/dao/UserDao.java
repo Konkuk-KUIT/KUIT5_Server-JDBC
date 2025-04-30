@@ -3,6 +3,7 @@ package jwp.dao;
 import java.util.List;
 
 import core.jdbc.JdbcTemplate;
+import core.jdbc.KeyHolder;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
 import jwp.model.User;
@@ -20,7 +21,7 @@ public class UserDao {
             preparedStatement.setString(4, user.getEmail());
         };
 
-        jdbcTemplate.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
     }
 
     public User findByUserId(String userId) {
@@ -51,7 +52,7 @@ public class UserDao {
             preparedStatement.setString(4, user.getUserId());
         };
 
-        jdbcTemplate.update(sql, preparedStatementSetter);
+        jdbcTemplate.update(sql, preparedStatementSetter, null);
     }
 
     public List<User> findAll() {
