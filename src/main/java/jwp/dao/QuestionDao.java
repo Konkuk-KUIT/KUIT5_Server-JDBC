@@ -69,4 +69,21 @@ public class QuestionDao {
         return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
 
+    public Question update(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        KeyHolder keyHolder = new KeyHolder();
+
+        String sql = "UPDATE Questions SET title = ?, contents = ?, countOfAnswer = ? WHERE questionId = ?";
+
+        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
+            preparedStatement.setString(1, question.getTitle());
+            preparedStatement.setString(2, question.getContents());
+            preparedStatement.setString(3, String.valueOf(question.getCountOfAnswer()));
+            preparedStatement.setString(4, String.valueOf(question.getQuestionId()));
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
+        return findByQuestionId(keyHolder.getId());
+    }
+
 }
