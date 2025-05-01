@@ -13,7 +13,7 @@ import java.util.List;
 public class AnswerDao {
     public List<Answer> findAllByQuestionId(Long questionId) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "SELECT * FROM ANSWERS WHERE questionId = ? ORDER BY createdDate ASC";
+        String sql = "SELECT * FROM ANSWERS WHERE questionId = ?";
 
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override

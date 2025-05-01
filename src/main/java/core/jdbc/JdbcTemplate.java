@@ -2,10 +2,7 @@ package core.jdbc;
 
 import jwp.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +11,7 @@ public class JdbcTemplate {
 
         try (
                 Connection connection = ConnectionManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
@@ -31,11 +28,11 @@ public class JdbcTemplate {
 
     public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
         try (
-                Connection conn = ConnectionManager.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
+                Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatementSetter.setValues(pstmt);
-            pstmt.executeUpdate();
+            preparedStatementSetter.setValues(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

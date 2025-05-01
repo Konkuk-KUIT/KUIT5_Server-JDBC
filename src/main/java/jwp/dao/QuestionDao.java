@@ -15,7 +15,7 @@ public class QuestionDao {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     public List<Question> findAll() throws SQLException {
-        String sql = "SELECT * FROM QUESTIONS ORDER BY questionId DESC";
+        String sql = "SELECT * FROM QUESTIONS";
 
         RowMapper<Question> rowMapper = new RowMapper<Question>() {
             @Override

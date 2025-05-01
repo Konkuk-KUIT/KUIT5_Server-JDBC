@@ -15,7 +15,7 @@
         <article class="article">
             <div class="article-header">
                 <div class="article-header-thumb">
-                    <img src="../../img/picture.jpeg" class="article-author-thumb" alt="">
+                    <img src="../img/picture.jpeg" class="article-author-thumb" alt="">
                 </div>
                 <div class="article-header-text">
                     <span class="article-author-name">${question.writer}</span>
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="article-doc comment-doc">
-                                <p>${each.content}</p>
+                                <p>${each.contents}</p>
                             </div>
                             <div class="article-util">
                                 <ul class="article-util-list">
