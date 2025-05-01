@@ -3,14 +3,14 @@ package jwp.model;
 import java.sql.Timestamp;
 
 public class Question {
-    private long questionId;
+    private Long questionId;
     private String writer;
     private String title;
     private String contents;
     private Timestamp createdDate;
     private int countOfAnswer;
 
-    public Question(long questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
+    public Question(Long questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
@@ -19,7 +19,7 @@ public class Question {
         this.countOfAnswer = countOfAnswer;
     }
 
-    public long getQuestionId() {
+    public Long getQuestionId() {
         return questionId;
     }
 
@@ -41,5 +41,10 @@ public class Question {
 
     public int getCountOfAnswer() {
         return countOfAnswer;
+    }
+
+    @Override
+    public String toString() {
+        return this.questionId + " " + this.writer + " " + this.title + " " + this.contents;
     }
 }
