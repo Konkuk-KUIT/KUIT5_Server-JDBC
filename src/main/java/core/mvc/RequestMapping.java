@@ -17,13 +17,16 @@ public class RequestMapping {
         controllers.put("/user/logout", new LogoutController());
         controllers.put("/user/update", new UpdateUserController());
         controllers.put("/user/updateForm", new UpdateUserFormController());
+        controllers.put("/qna/form", new CreateQuestionFormController());
+        controllers.put("/qna/create", new CreateQuestionController());
 
         controllers.put("/user/form", new ForwardController("/user/form.jsp"));
         controllers.put("/user/loginForm", new ForwardController("/user/login.jsp"));
         controllers.put("/user/loginFailed", new ForwardController("/user/loginFailed.jsp"));
 
-        controllers.put("/qna/form", new ForwardController("/qna/form.jsp"));
-        controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
+        //controllers.put("/qna/form", new ForwardController("/qna/form.jsp"));
+        controllers.put("/qna/show", new ShowQuestionController());
+
 
     }
 

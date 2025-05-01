@@ -18,6 +18,8 @@ public class JdbcTemplate {
             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
