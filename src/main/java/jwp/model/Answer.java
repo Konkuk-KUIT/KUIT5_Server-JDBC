@@ -1,22 +1,23 @@
 package jwp.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Answer {
     private Long answerId;
     private String writer;
     private String contents;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private int questionId;
 
     public Answer(String contents, String writer, int questionId) {
         this.contents = contents;
         this.writer = writer;
-        this.createdDate = LocalDateTime.now();;
+        this.createdDate = Timestamp.valueOf(LocalDateTime.now());
         this.questionId = questionId;
     }
 
-    public Answer(Long answerId, String contents, String writer, LocalDateTime createdDate, int questionId) {
+    public Answer(Long answerId, String contents, String writer, Timestamp createdDate, int questionId) {
         this.contents = contents;
         this.answerId = answerId;
         this.writer = writer;
@@ -36,7 +37,7 @@ public class Answer {
         return contents;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 

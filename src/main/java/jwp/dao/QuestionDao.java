@@ -69,7 +69,7 @@ public class QuestionDao {
         return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
 
-    public Question update(Question question) {
+    public void update(Question question) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         KeyHolder keyHolder = new KeyHolder();
 
@@ -83,7 +83,20 @@ public class QuestionDao {
         };
 
         jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
-        return findByQuestionId(keyHolder.getId());
+    }
+
+    public void updateCountOfAnswer(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        KeyHolder keyHolder = new KeyHolder();
+
+        String sql = "UPDATE Questions SET countOfAnswer = ? WHERE questionId = ?";
+
+        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
+            preparedStatement.setString(1, String.valueOf(question.getCountOfAnswer()));
+            preparedStatement.setString(2, String.valueOf(question.getQuestionId()));
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
     }
 
 }
