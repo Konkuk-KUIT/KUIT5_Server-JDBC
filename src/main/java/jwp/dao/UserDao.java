@@ -71,6 +71,7 @@ public class UserDao {
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
+
             }
         };
         RowMapper rowMapper = new RowMapper() {
