@@ -31,7 +31,7 @@ public class Question {
         return title;
     }
 
-    public String getContents() {
+    public String getContent() {
         return contents;
     }
 
