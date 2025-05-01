@@ -6,9 +6,11 @@
 <%@ include file="/include/header.jspf" %>
 <body>
 <%@ include file="/include/navigation.jspf" %>
-
 <div class="container">
     <main class="form-signin">
+        <div>
+            ID와 비밀번호가 틀렸습니다.
+        </div>
         <form name="login" method="post" action="/user/login">
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
@@ -26,6 +28,6 @@
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/scripts.js"></script>
+<script src="../../js/scripts.js"></script>
 </body>
 </html>
