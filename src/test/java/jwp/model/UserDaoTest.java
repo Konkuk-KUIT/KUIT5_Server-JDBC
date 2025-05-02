@@ -2,8 +2,6 @@ package jwp.model;
 
 
 import core.jdbc.ConnectionManager;
-import java.sql.SQLException;
-import java.util.List;
 import jwp.dao.UserDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+
+import java.util.List;
 
 public class UserDaoTest {
 
@@ -62,10 +62,6 @@ public class UserDaoTest {
     private static void saveUser() {
         User user = new User("kongoose", "password", "name", "javajigi@email.com");
         UserDao userDao = new UserDao();
-        try {
-            userDao.insert(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDao.insert(user);
     }
 }
