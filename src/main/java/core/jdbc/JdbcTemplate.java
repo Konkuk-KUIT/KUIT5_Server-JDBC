@@ -8,23 +8,13 @@ import java.util.List;
 
 public class JdbcTemplate {
 
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
+        try (Connection conn = ConnectionManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            preparedStatementSetter.setValues(pstmt);
 
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatementSetter.setValues(preparedStatement);
-
-            preparedStatement.executeUpdate();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,36 +33,23 @@ public class JdbcTemplate {
         }
     }
 
-    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
+        try (Connection conn = ConnectionManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            preparedStatementSetter.setValues(pstmt);
 
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatementSetter.setValues(preparedStatement);
-
-            resultSet = preparedStatement.executeQuery();
-            List results = new ArrayList<>();
-            while(resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                List results = new ArrayList<>();
+                while(resultSet.next()) {
+                    results.add(rowMapper.mapRow(resultSet));
+                }
+                return results;
             }
-            return results;
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
         List result = query(sql, preparedStatementSetter, rowMapper);
         if (result.isEmpty())
             return null;

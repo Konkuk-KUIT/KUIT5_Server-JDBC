@@ -3,6 +3,7 @@ package core.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@FunctionalInterface
 public interface PreparedStatementSetter {
-    public void setValues(PreparedStatement preparedStatement) throws SQLException;
+    void setValues(PreparedStatement preparedStatement) throws SQLException;
 }

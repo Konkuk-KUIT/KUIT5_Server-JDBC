@@ -3,6 +3,7 @@ package core.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@FunctionalInterface
 public interface RowMapper {
-    public Object mapRow(ResultSet resultSet) throws SQLException;
+    Object mapRow(ResultSet resultSet) throws SQLException;
 }
