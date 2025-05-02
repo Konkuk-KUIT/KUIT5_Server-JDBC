@@ -1,7 +1,5 @@
 package jwp.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import core.jdbc.RowMapper;
 import jwp.model.User;
 
 public class UserDao {
-    public void insert(User user) {
+    public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "INSERT INTO Users VALUES(?, ?, ?, ?)";

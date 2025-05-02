@@ -6,7 +6,6 @@ import core.jdbc.RowMapper;
 import jwp.model.KeyHolder;
 import jwp.model.Question;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
