@@ -13,16 +13,17 @@ import java.util.List;
 
 public class QuestionDao {
 
+    public long getNewQuestionId() throws SQLException {
+        return findAll().size()+1;
+    }
+
     public List<Question> findAll() throws SQLException {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "SELECT * FROM Questions";
-        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
 
-            }
         };
         RowMapper rowMapper = new RowMapper() {
             @Override
@@ -61,11 +62,10 @@ public class QuestionDao {
     }
 
     public Question findByQuestionId(long questionId) throws SQLException {
-        //TODO 구현 하기
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        String sql = "SELECT * FROM Questions WHERE questionID = ?";
+        String sql = "SELECT * FROM Questions WHERE questionId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
@@ -87,5 +87,20 @@ public class QuestionDao {
         };
 
         return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+    }
+
+    public void updateCountOfAnswer(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+        String sql = "UPDATE Questions SET countOfAnswer = ? WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, String.valueOf(question.getCountOfAnswer()));
+                preparedStatement.setString(2, String.valueOf(question.getQuestionId()));
+            }
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter);
     }
 }

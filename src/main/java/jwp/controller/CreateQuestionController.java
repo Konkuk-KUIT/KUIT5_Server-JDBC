@@ -18,7 +18,7 @@ public class CreateQuestionController implements Controller {
 
 
         Question question = new Question(
-                (long) (questionDao.findAll().size())+1,
+                questionDao.getNewQuestionId(),
                 req.getParameter("writer"),
                 req.getParameter("title"),
                 req.getParameter("contents"),

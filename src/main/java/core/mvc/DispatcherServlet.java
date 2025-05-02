@@ -32,6 +32,12 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+
+        if (viewName == null || viewName.isEmpty()) {
+            System.out.println("null 받았따.");
+            return; // JSON 응답 등을 직접 처리한 경우
+        }
+
         if (viewName.startsWith(REDIRECT_PREFIX)) {
             resp.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
             return;

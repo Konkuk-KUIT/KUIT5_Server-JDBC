@@ -39,7 +39,7 @@ public class UserDao {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        String sql = "SELECT * FROM Users WHERE userID = ?";
+        String sql = "SELECT * FROM Users WHERE userId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
