@@ -33,14 +33,14 @@ public class JdbcTemplate {
         }
     }
 
-    public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
+    public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper) {
         try (Connection conn = ConnectionManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             preparedStatementSetter.setValues(pstmt);
 
             try (ResultSet resultSet = pstmt.executeQuery()) {
                 List<T> results = new ArrayList<>();
                 while(resultSet.next()) {
-                    results.add((T) rowMapper.mapRow(resultSet));
+                    results.add(rowMapper.mapRow(resultSet));
                 }
                 return results;
             }
@@ -49,11 +49,11 @@ public class JdbcTemplate {
         }
     }
 
-    public <T> List<T> query(String sql, RowMapper rowMapper) {
+    public <T> List<T> query(String sql, RowMapper<T> rowMapper) {
         return query(sql, ps -> {}, rowMapper);
     }
 
-    public <T> T queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) {
+    public <T> T queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper) {
         List<T> result = query(sql, preparedStatementSetter, rowMapper);
         if (result.isEmpty())
             return null;
