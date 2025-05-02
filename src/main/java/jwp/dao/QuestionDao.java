@@ -13,8 +13,7 @@ public class QuestionDao {
     public List<Question> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Questions";
-        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {};
-        RowMapper rowMapper = resultSet -> new Question(resultSet.getLong("questionId"),
+        RowMapper<Question> rowMapper = resultSet -> new Question(resultSet.getLong("questionId"),
             resultSet.getString("writer"),
             resultSet.getString("title"),
             resultSet.getString("contents"),
@@ -22,7 +21,7 @@ public class QuestionDao {
             Integer.parseInt(resultSet.getString("countOfAnswer"))
         );
 
-        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     public Question insert(String writer, String title, String contents) {
@@ -47,7 +46,7 @@ public class QuestionDao {
         String sql = "SELECT * FROM Questions WHERE questionId = ?";
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> preparedStatement.setLong(1, id);
 
-        RowMapper rowMapper = resultSet -> new Question(
+        RowMapper<Question> rowMapper = resultSet -> new Question(
             resultSet.getLong("questionId"),
             resultSet.getString("writer"),
             resultSet.getString("title"),

@@ -29,7 +29,7 @@ public class UserDao {
 
         String sql = "SELECT * FROM Users WHERE userId = ?";
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> preparedStatement.setString(1, userId);
-        RowMapper rowMapper = resultSet -> new User(
+        RowMapper<User> rowMapper = resultSet -> new User(
             resultSet.getString("userId"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getString("email")
         );
 
@@ -53,9 +53,8 @@ public class UserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "SELECT * FROM Users";
-        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {};
-        RowMapper rowMapper = resultSet -> new User(resultSet.getString("userId"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getString("email"));
+        RowMapper<User> rowMapper = resultSet -> new User(resultSet.getString("userId"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getString("email"));
 
-        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, rowMapper);
     }
 }
