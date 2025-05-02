@@ -33,7 +33,7 @@ public class UserDao {
             resultSet.getString("userId"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getString("email")
         );
 
-        return (User) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 
     public void update(User user) {
@@ -56,6 +56,6 @@ public class UserDao {
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> {};
         RowMapper rowMapper = resultSet -> new User(resultSet.getString("userId"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getString("email"));
 
-        return (List<User>) jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
 }

@@ -22,7 +22,7 @@ public class QuestionDao {
             Integer.parseInt(resultSet.getString("countOfAnswer"))
         );
 
-        return (List<Question>) jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
 
     public Question insert(String writer, String title, String contents) {
@@ -56,6 +56,6 @@ public class QuestionDao {
             Integer.parseInt(resultSet.getString("countOfAnswer"))
         );
 
-        return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 }
