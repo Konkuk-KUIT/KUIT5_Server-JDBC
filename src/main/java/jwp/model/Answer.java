@@ -17,6 +17,13 @@ public class Answer {
         this.questionId = questionId;
     }
 
+    public Answer(String writer, String contents, Long questionId) {
+        this.writer = writer;
+        this.content = contents;
+        this.createdDate = new Timestamp(System.currentTimeMillis());
+        this.questionId = questionId;
+    }
+
     public Long getAnswerId() {
         return answerId;
     }
@@ -35,5 +42,16 @@ public class Answer {
 
     public Long getQuestionId() {
         return questionId;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "answerId=" + answerId +
+                ", writer='" + writer + '\'' +
+                ", content='" + content + '\'' +
+                ", createdDate=" + createdDate +
+                ", questionId=" + questionId +
+                '}';
     }
 }
