@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="article-doc comment-doc">
-                                <p>${each.content}</p>
+                                <p>${each.contents}</p>
                             </div>
                             <div class="article-util">
                                 <ul class="article-util-list">
