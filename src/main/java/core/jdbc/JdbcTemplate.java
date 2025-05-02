@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import core.jdbc.KeyHolder;
 
 public  class JdbcTemplate {
 
@@ -45,6 +46,25 @@ public  class JdbcTemplate {
                 }
             }
     }
+
+    public void updateWithKeyholder(String sql, PreparedStatementSetter pstmtSetter, core.jdbc.KeyHolder holder) {
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            pstmtSetter.setValues(pstmt);
+            pstmt.executeUpdate();
+
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    holder.setId((int) rs.getLong(1));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     //public abstract String createQuery();

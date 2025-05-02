@@ -18,8 +18,14 @@ public class CreateUserController implements Controller {
                 req.getParameter("email"));
         //MemoryUserRepository.getInstance().addUser(user);
         UserDao userDao = new UserDao();
-        userDao.insert(user);
-        System.out.println("user 회원가입 완료");
+        try {
+            userDao.insert(user);
+            System.out.println("user 회원가입 완료");
+        } catch (Exception e) {
+            System.out.println("회원가입 실패: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         return "redirect:/user/list";
     }
 }
