@@ -57,6 +57,6 @@ public class JdbcTemplate {
         List<T> result = query(sql, preparedStatementSetter, rowMapper);
         if (result.isEmpty())
             return null;
-        return result.getFirst();
+        return result.get(0);
     }
 }
