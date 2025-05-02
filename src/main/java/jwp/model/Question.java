@@ -42,9 +42,4 @@ public class Question {
     public int getCountOfAnswer() {
         return countOfAnswer;
     }
-
-    @Override
-    public String toString() {
-        return this.questionId + " " + this.writer + " " + this.title + " " + this.contents;
-    }
 }

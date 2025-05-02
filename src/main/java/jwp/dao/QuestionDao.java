@@ -13,12 +13,13 @@ public class QuestionDao {
     public List<Question> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Questions";
-        RowMapper<Question> rowMapper = resultSet -> new Question(resultSet.getLong("questionId"),
-            resultSet.getString("writer"),
-            resultSet.getString("title"),
-            resultSet.getString("contents"),
-            Timestamp.valueOf(resultSet.getString("createdDate")),
-            Integer.parseInt(resultSet.getString("countOfAnswer"))
+        RowMapper<Question> rowMapper = resultSet -> new Question(
+                resultSet.getLong("questionId"),
+                resultSet.getString("writer"),
+                resultSet.getString("title"),
+                resultSet.getString("contents"),
+                resultSet.getTimestamp("createdDate"),
+                resultSet.getInt("countOfAnswer")
         );
 
         return jdbcTemplate.query(sql, rowMapper);
@@ -47,12 +48,12 @@ public class QuestionDao {
         PreparedStatementSetter preparedStatementSetter = preparedStatement -> preparedStatement.setLong(1, id);
 
         RowMapper<Question> rowMapper = resultSet -> new Question(
-            resultSet.getLong("questionId"),
-            resultSet.getString("writer"),
-            resultSet.getString("title"),
-            resultSet.getString("contents"),
-            Timestamp.valueOf(resultSet.getString("createdDate")),
-            Integer.parseInt(resultSet.getString("countOfAnswer"))
+                resultSet.getLong("questionId"),
+                resultSet.getString("writer"),
+                resultSet.getString("title"),
+                resultSet.getString("contents"),
+                resultSet.getTimestamp("createdDate"),
+                resultSet.getInt("countOfAnswer")
         );
 
         return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
