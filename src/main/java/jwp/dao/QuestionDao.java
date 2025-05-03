@@ -12,10 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class QuestionDao {
-    public void insert(Question question) throws SQLException {
+    public Question insert(Question question) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        String sql = "INSERT INTO Questions VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Questions (writer, title, contents, createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
@@ -28,6 +28,34 @@ public class QuestionDao {
         };
 
         jdbcTemplate.update(sql, preparedStatementSetter);
+        return findByQuestionId(question.getQuestionId());
+    }
+
+    public Question findByQuestionId(int questionId) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+        String sql = "SELECT * FROM Questions WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, questionId);
+            }
+        };
+        RowMapper<Question> rowMapper = new RowMapper<Question>() {
+            @Override
+            public Question mapRow(ResultSet resultSet) throws SQLException {
+                return  new Question(
+                        resultSet.getInt("questionId"),
+                        resultSet.getString("writer"),
+                        resultSet.getString("title"),
+                        resultSet.getString("contents"),
+                        resultSet.getTimestamp("createdDate"),
+                        resultSet.getInt("countOfAnswer")
+                );
+            }
+        };
+
+        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 
     public List<Question> findAll() throws SQLException {
@@ -47,7 +75,6 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer")
                 );
             }

@@ -23,6 +23,23 @@ public class Question {
     private Timestamp createdDate;
     private int countOfAnswer;
 
+    public Question(int questionId, String writer, String title, String contents, int countOfAnswer) {
+        this.questionId = questionId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = Timestamp.valueOf(LocalDateTime.now());
+        this.countOfAnswer = countOfAnswer;
+    }
+
+    public Question(String contents, String title, String writer) {
+        this.createdDate = Timestamp.valueOf(LocalDateTime.now());
+        this.contents = contents;
+        this.title = title;
+        this.writer = writer;
+        this.countOfAnswer = 0;
+    }
+
     public Question(int questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
@@ -30,13 +47,6 @@ public class Question {
         this.contents = contents;
         this.createdDate = createdDate;
         this.countOfAnswer = countOfAnswer;
-    }
-
-    public Question(Timestamp createdDate, String contents, String title, String writer) {
-        this.createdDate = createdDate;
-        this.contents = contents;
-        this.title = title;
-        this.writer = writer;
     }
 
     public int getQuestionId() {
