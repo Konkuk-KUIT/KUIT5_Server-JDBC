@@ -11,13 +11,13 @@ public class JdbcTemplate{
     private final KeyHolder holder = new KeyHolder();
 
     public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if (rs.next()) {
-                holder.setId((int) rs.getLong(1));
+            if ( rs instanceof Number && rs.next()) {
+                holder.setId(rs.getLong(1));
             }
             rs.close();
         } catch (SQLException e) {

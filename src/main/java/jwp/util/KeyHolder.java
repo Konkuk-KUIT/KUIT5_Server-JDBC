@@ -1,13 +1,13 @@
 package jwp.util;
 
 public class KeyHolder {
-    private int id;
+    private Long id;
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 }

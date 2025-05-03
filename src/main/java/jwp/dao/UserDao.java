@@ -14,7 +14,7 @@ public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        String sql = "INSERT INTO Users VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (userId, password, name, email) VALUES (?, ?, ?, ?)";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
