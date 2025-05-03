@@ -11,6 +11,8 @@ CREATE TABLE USERS (
 
 INSERT INTO USERS VALUES('admin', 'password', '박지원', 'admin@naver.com');
 
+INSERT INTO USERS VALUES('11', '11', '11', '11@11');
+
 DROP TABLE IF EXISTS QUESTIONS;
 
 CREATE TABLE QUESTIONS (
@@ -64,14 +66,18 @@ INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES
      '토끼책 좋아합니다',
      CURRENT_TIMESTAMP(), 4);
 
+UPDATE QUESTIONS SET countOfAnswer = 1 WHERE questionId = 4;
 
 INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES
     ('김민우',
      '바쁘다 바빠 현대사회',
      CURRENT_TIMESTAMP(), 3);
 
+UPDATE QUESTIONS SET countOfAnswer = 1 WHERE questionId = 3;
 
 INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES
     ('이윤정',
      '저도여 ㅠㅜ',
      CURRENT_TIMESTAMP(), 1);
+
+UPDATE QUESTIONS SET countOfAnswer = 1 WHERE questionId = 1;

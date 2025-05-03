@@ -45,7 +45,7 @@ public class UserDaoTest {
         UserDao userDao = new UserDao();
         List<User> findUsers = Assertions.assertDoesNotThrow(() -> userDao.findAll());
 
-        Assertions.assertEquals(findUsers.size(), 2);
+        Assertions.assertEquals(findUsers.size(), 3);
     }
 
     @Test
