@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
+@WebServlet("/")
+//@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
     private RequestMapping requestMapping;
     private static final String REDIRECT_PREFIX = "redirect:";
@@ -22,8 +23,19 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
+
+        if (controller == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         try {
             String viewName = controller.execute(req, resp);
+            if (viewName == null || viewName.isEmpty()) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "요청한 경로를 찾을 수 없습니다.");
+                return;
+            }
+
             move(viewName, req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
