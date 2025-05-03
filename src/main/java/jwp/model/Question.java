@@ -16,14 +16,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Question {
-    private int questionId;
+    private Long questionId;
     private String writer;
     private String title;
     private String contents;
     private Timestamp createdDate;
     private int countOfAnswer;
 
-    public Question(int questionId, String writer, String title, String contents, int countOfAnswer) {
+    public Question(Long questionId, String writer, String title, String contents, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
@@ -40,7 +40,7 @@ public class Question {
         this.countOfAnswer = 0;
     }
 
-    public Question(int questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
+    public Question(Long questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
@@ -49,11 +49,11 @@ public class Question {
         this.countOfAnswer = countOfAnswer;
     }
 
-    public int getQuestionId() {
+    public Long getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 

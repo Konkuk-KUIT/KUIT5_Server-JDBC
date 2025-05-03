@@ -31,21 +31,21 @@ public class QuestionDao {
         return findByQuestionId(question.getQuestionId());
     }
 
-    public Question findByQuestionId(int questionId) throws SQLException {
+    public Question findByQuestionId(Long questionId) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "SELECT * FROM Questions WHERE questionId = ?";
         PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setInt(1, questionId);
+                preparedStatement.setLong(1, questionId);
             }
         };
         RowMapper<Question> rowMapper = new RowMapper<Question>() {
             @Override
             public Question mapRow(ResultSet resultSet) throws SQLException {
                 return  new Question(
-                        resultSet.getInt("questionId"),
+                        resultSet.getLong("questionId"),
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
@@ -71,7 +71,8 @@ public class QuestionDao {
         RowMapper<Question> rowMapper = new RowMapper<Question>() {
             @Override
             public Question mapRow(ResultSet resultSet) throws SQLException {
-                return new Question(resultSet.getInt("questionId"),
+                return new Question(
+                        resultSet.getLong("questionId"),
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),

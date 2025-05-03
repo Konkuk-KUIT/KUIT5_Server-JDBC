@@ -12,7 +12,7 @@ public class ShowQuestionController implements Controller {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Question question = questionDao.findByQuestionId(Integer.parseInt(req.getParameter("questionId")));
+        Question question = questionDao.findByQuestionId(Long.parseLong(req.getParameter("questionId")));
         req.setAttribute("question", question);
         return "/qna/show.jsp";
     }
