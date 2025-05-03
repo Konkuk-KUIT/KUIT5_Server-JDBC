@@ -83,4 +83,20 @@ public class QuestionDao {
 
         return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
     }
+
+    public void update(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+        String sql = "UPDATE Questions SET title = ?, contents = ?, countOfAnswer = ? WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, question.getTitle());
+                preparedStatement.setString(2, question.getContents());
+                preparedStatement.setLong(3, question.getCountOfAnswer());
+            }
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter);
+    }
 }
