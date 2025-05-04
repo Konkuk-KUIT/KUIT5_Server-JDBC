@@ -6,6 +6,7 @@ import java.util.List;
 
 import core.jdbc.ConnectionManager;
 import core.jdbc.JdbcTemplate;
+import core.jdbc.SelectJdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
@@ -29,42 +30,27 @@ public class UserDao {
 
 
     public User findByUserId(String userId) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String sql = "SELECT * FROM Users WHERE userId = ?";
 
-        try{
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, userId);
-            resultSet = preparedStatement.executeQuery();
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public String createQuery() {
+                return "SELECT * FROM Users WHERE userId = ?";
+            }
 
-            User user = null;
-            if(resultSet.next()){
-                user = new User(resultSet.getString("userId"),
-                        resultSet.getString("password"),
-                        resultSet.getString("name"),
-                        resultSet.getString("email"));
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, userId);
 
-                return  user;
             }
-        } finally {
-            if(resultSet != null){
-                resultSet.close();
-            }
-            if(preparedStatement != null){
-                preparedStatement.close();
-            }
-            if(connection != null){
-                connection.close();
-            }
-        }
+        };
 
-        return null;
+        return jdbcTemplate.readUser();
     }
 
+
+
     public void update(User user) throws SQLException {
+
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             public String createQuery() {
@@ -84,38 +70,18 @@ public class UserDao {
 
     public List<User> findAll() throws SQLException {
 
-        ArrayList<User> users = new ArrayList<>();
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        String sql = "SELECT * FROM Users";
-
-        try{
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                User user = new User(resultSet.getString("userId"),
-                            resultSet.getString("password"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"));
-                users.add(user);
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public String createQuery() {
+                return "SELECT * FROM Users";
             }
-        }finally {
-            if(resultSet != null){
-                resultSet.close();
-            }
-            if(preparedStatement != null){
-                preparedStatement.close();
-            }
-            if(connection != null){
-                connection.close();
-            }
-        }
 
-        return users;
+            @Override
+            public void setValues(PreparedStatement preparedStatement) {
+            }
+
+        };
+
+        return jdbcTemplate.readUsers();
     }
 }

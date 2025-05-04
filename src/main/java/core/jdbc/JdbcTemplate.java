@@ -9,25 +9,15 @@ import java.sql.SQLException;
 public abstract class JdbcTemplate {
 
     public void update() throws SQLException{
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+
         String sql = createQuery();
-
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+        try(Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);)
+        {
             setValues(preparedStatement);
-
             preparedStatement.executeUpdate();
         }
-        finally{
-            if(preparedStatement != null){
-                preparedStatement.close();
-            }
-            if(connection != null){
-                connection.close();
-            }
-        }
+
     }
 
     public abstract String createQuery();
