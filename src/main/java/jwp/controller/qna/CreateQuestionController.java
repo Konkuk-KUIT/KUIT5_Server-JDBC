@@ -1,4 +1,4 @@
-package jwp.controller.question;
+package jwp.controller.qna;
 
 import core.mvc.Controller;
 import jwp.dao.QuestionDao;

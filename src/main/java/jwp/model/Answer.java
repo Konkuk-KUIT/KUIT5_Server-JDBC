@@ -17,6 +17,13 @@ public class Answer {
         this.questionId = questionId;
     }
 
+    public Answer(String writer, String contents, Timestamp createdDate, Long questionId) {
+        this.writer = writer;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.questionId = questionId;
+    }
+
     public Long getAnswerId() {
         return answerId;
     }
