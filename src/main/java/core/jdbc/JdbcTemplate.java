@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class JdbcTemplate {
-    public void update() throws SQLException {
+public class JdbcTemplate {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = createQuery();
 
-        try{
+        try {
             connection = ConnectionManager.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            setValues(preparedStatement);
+            preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
         } finally {
             if (preparedStatement != null) {
@@ -28,25 +27,24 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public List query() throws SQLException {
+    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
         Connection connection = null;
-        PreparedStatement preparedStatement=null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
             connection = ConnectionManager.getConnection();
-            String sql = createQuery();
 
             preparedStatement = connection.prepareStatement(sql);
 
-            setValues(preparedStatement);
-            resultSet= preparedStatement.executeQuery();
+            preparedStatementSetter.setValues(preparedStatement);
+            resultSet = preparedStatement.executeQuery();
             List result = new ArrayList<>();
             while (resultSet.next()) {
-                result.add(mapRow(resultSet));
+                result.add(rowMapper.mapRow(resultSet));
             }
             return result;
-        }finally {
+        } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
@@ -59,16 +57,11 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public Object queryForObject() throws SQLException{
-        List result = query();
-        if (result.size()==0)
+    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+        List result = query(sql, preparedStatementSetter, rowMapper);
+        if (result.size() == 0)
             return null;
         return result.get(0);
     }
-
-
-    public abstract String createQuery();
-    public abstract void setValues(PreparedStatement preparedStatement) throws SQLException;
-    public abstract Object mapRow(ResultSet resultSet)throws SQLException;
 
 }
