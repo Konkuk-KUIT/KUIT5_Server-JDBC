@@ -1,7 +1,5 @@
 package core.jdbc;
 
-import jwp.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,4 +26,5 @@ public abstract class JdbcTemplate {
     }
     public abstract String createQuery();
     public abstract void setValues(PreparedStatement preparedStatement) throws SQLException;
+
 }
