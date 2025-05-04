@@ -1,20 +1,25 @@
 package core.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) {
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder holder) {
         try (
                 Connection connection = ConnectionManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)
+                PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+            if (holder != null) {
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if (rs.next()) {
+                    holder.setId(rs.getLong(1));
+                }
+                rs.close();
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -17,7 +17,7 @@ public class UserDao {
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
             preparedStatement.setString(4, user.getEmail());
-        });
+        },null);
     }
 
     public User findByUserId(String userId) {
@@ -36,7 +36,7 @@ public class UserDao {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getEmail());
-        });
+        },null);
     }
 
     public List<User> findAll(){
