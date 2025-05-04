@@ -35,7 +35,7 @@ public class CreateQuestionFormController implements Controller {
 
             Question question = questionDao.insert(createdQuestion);
             if(question == null){
-                throw new NullPointerException("error occurred in creating question")
+                throw new NullPointerException("error occurred in creating question");
             }
             return "redirect:/";
 
