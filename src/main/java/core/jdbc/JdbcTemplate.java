@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcTemplate {
+public class JdbcTemplate<T> {
 
     public void update(String sql, PreparedStatementSetter pstmtSetter)  {
         try (Connection connection = ConnectionManager.getConnection();
@@ -20,7 +20,7 @@ public class JdbcTemplate {
         }
     }
 
-    public <T> List<T> query(String sql, PreparedStatementSetter pstmtSetter, RowMapper<T> rowMapper) {
+    public List<T> query(String sql, PreparedStatementSetter pstmtSetter, RowMapper<T> rowMapper) {
         ResultSet rs = null;
         List<T> result = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class JdbcTemplate {
         return result;
     }
 
-    public <T> T queryForObject(String sql, PreparedStatementSetter pstmtSetter, RowMapper rowMapper) {
+    public T queryForObject(String sql, PreparedStatementSetter pstmtSetter, RowMapper rowMapper) {
         List<T> result = query(sql, pstmtSetter, rowMapper);
         if (result.isEmpty()) {
             return null;

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class UpdateUserController implements Controller {
 
-    UserDao userDao = new UserDao();
+    private final UserDao userDao = new UserDao();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

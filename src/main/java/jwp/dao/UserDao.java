@@ -1,8 +1,5 @@
 package jwp.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import core.jdbc.JdbcTemplate;
@@ -11,10 +8,9 @@ import core.jdbc.RowMapper;
 import jwp.model.User;
 
 public class UserDao {
+    private final JdbcTemplate<User> jdbcTemplate = new JdbcTemplate<>();
 
     public void insert(User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
 
         PreparedStatementSetter pstmtSetter = pstmt ->  {
@@ -28,8 +24,6 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         String sql = "SELECT * FROM USERS WHERE userId = ?";
 
         PreparedStatementSetter pstmtSetter = pstmt ->
@@ -44,8 +38,6 @@ public class UserDao {
     }
 
     public void update(User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ?";
 
         PreparedStatementSetter pstmtSetter = pstmt ->  {
@@ -58,8 +50,6 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         String sql = "SELECT * FROM USERS";
 
         PreparedStatementSetter pstmtSetter = pstmt ->  {};

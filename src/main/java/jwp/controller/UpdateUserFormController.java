@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 public class UpdateUserFormController implements Controller {
 
-    UserDao userDao = new UserDao();
+    private final UserDao userDao = new UserDao();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
