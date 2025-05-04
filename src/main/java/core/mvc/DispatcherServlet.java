@@ -14,19 +14,22 @@ public class DispatcherServlet extends HttpServlet {
     private static final String REDIRECT_PREFIX = "redirect:";
 
     @Override
-    public void init() throws ServletException {
+    public void init(){
         requestMapping = new RequestMapping();
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+
         String url = req.getRequestURI();
+        System.out.println("11"+url);
         Controller controller = requestMapping.getController(url);
+
         try {
             String viewName = controller.execute(req, resp);
             move(viewName, req, resp);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"qq");
             throw new ServletException(e.getMessage());
         }
     }
