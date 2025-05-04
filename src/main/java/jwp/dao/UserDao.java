@@ -9,22 +9,20 @@ import core.jdbc.RowMapper;
 import jwp.model.User;
 
 public class UserDao {
+
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "INSERT INTO Users VALUES (?, ?, ?, ?)";
 
-        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                try {
-                    preparedStatement.setString(1, user.getUserId());
-                    preparedStatement.setString(2, user.getPassword());
-                    preparedStatement.setString(3, user.getName());
-                    preparedStatement.setString(4, user.getEmail());
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
+            try {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         };
 
@@ -99,25 +97,18 @@ public class UserDao {
 
         String sql = "SELECT * FROM Users";
 
-        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-
-            }
+        PreparedStatementSetter preparedStatementSetter = preparedStatement -> {
         };
 
-        RowMapper rowMapper = new RowMapper() {
-            @Override
-            public Object mapRow(ResultSet resultSet) throws SQLException {
-                try {
-                    return new User(resultSet.getString("userId"),
-                            resultSet.getString("password"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"));
+        RowMapper rowMapper = resultSet -> {
+            try {
+                return new User(resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"));
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         };
 
