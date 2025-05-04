@@ -14,12 +14,12 @@ public class DispatcherServlet extends HttpServlet {
     private static final String REDIRECT_PREFIX = "redirect:";
 
     @Override
-    public void init() throws ServletException {
+    public void init(){
         requestMapping = new RequestMapping();
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
         try {
