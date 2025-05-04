@@ -64,11 +64,11 @@ public class UserDao {
 
         PreparedStatementSetter pstmtSetter = pstmt ->  {};
 
-        RowMapper rowMapper = rs ->  new User(rs.getString("userId"),
+        RowMapper<User> rowMapper = rs ->  new User(rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"));
 
-        return (List<User>) jdbcTemplate.query(sql, pstmtSetter, rowMapper);
+        return jdbcTemplate.query(sql, pstmtSetter, rowMapper);
     }
 }
