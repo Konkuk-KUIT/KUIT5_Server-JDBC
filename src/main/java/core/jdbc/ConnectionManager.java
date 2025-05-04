@@ -12,6 +12,7 @@ public class ConnectionManager {
     private static final String DB_USERNAME = "sa";
     private static final String DB_PW = "";
 
+    // 데이터 소스 생성
     private static BasicDataSource ds;
     public static DataSource getDataSource() {
         if (ds == null) {
@@ -24,6 +25,7 @@ public class ConnectionManager {
         return ds;
     }
 
+    // 커넥션 받아오기
     public static Connection getConnection() {
         try {
             return getDataSource().getConnection();

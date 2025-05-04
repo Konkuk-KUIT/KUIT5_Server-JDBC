@@ -22,6 +22,7 @@ ext {
     tomcatVersion = '8.5.42'
 }
 
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testImplementation "org.springframework:spring-test:$springVersion"
@@ -41,6 +42,27 @@ dependencies {
     implementation("org.apache.tomcat.embed:tomcat-embed-jasper:$tomcatVersion")
     implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+tasks.named('processResources') {
+    doLast {
+        copy {
+            from 'src/main/resources'
+            into 'webapp/WEB-INF/classes'
+        }
+    }
 }
 
 test {
