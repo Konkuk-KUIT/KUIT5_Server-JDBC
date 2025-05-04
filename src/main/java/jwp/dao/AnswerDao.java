@@ -21,7 +21,7 @@ public class AnswerDao {
         return answerDao;
     }
 
-    public void insert(Answer answer) {
+    public Answer insert(Answer answer) {
         String sql = "INSERT INTO Answers (writer, contents, createdDate, questionId) Values (?, ?, ?, ?)";
         KeyHolder keyHolder = new KeyHolder();
         jdbcTemplate.update(sql, preparedStatement -> {
@@ -31,6 +31,7 @@ public class AnswerDao {
             preparedStatement.setLong(4, answer.getQuestionId());
         }, keyHolder);
         answer.setAnswerId(keyHolder.getId());
+        return answer;
     }
 
     public List<Answer> findByQuestionId(long questionId) {
@@ -38,7 +39,7 @@ public class AnswerDao {
         return jdbcTemplate.query(sql, preparedStatement -> {
             preparedStatement.setLong(1, questionId);
         }, resultSet -> {
-            return new Answer(resultSet.getLong("answerId"),
+            return new Answer(
                     resultSet.getString("writer"),
                     resultSet.getString("contents"),
                     resultSet.getTimestamp("createdDate").toLocalDateTime(),

@@ -55,4 +55,8 @@ public class Question {
     public int getCountOfAnswer() {
         return countOfAnswer;
     }
+
+    public void increaseCountOfAnswer() {
+        this.countOfAnswer+=1;
+    }
 }

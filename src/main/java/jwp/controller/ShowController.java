@@ -5,7 +5,6 @@ import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
 import jwp.model.Answer;
 import jwp.model.Question;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 //http://localhost:8080/qna/show?questionId=5
-@Slf4j
 public class ShowController implements Controller {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

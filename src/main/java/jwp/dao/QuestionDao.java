@@ -65,4 +65,12 @@ public class QuestionDao {
         }, keyHolder);
         question.setQuestionId(keyHolder.getId());
     }
+
+    public void updateCountOfAnswer(Question question) {
+        String sql = "UPDATE Questions SET countOfAnswer = ? WHERE questionId = ?";
+        jdbcTemplate.update(sql, preparedStatement -> {
+            preparedStatement.setInt(1, question.getCountOfAnswer());
+            preparedStatement.setLong(2, question.getQuestionId());
+        });
+    }
 }

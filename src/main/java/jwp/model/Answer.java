@@ -21,8 +21,7 @@ public class Answer {
     private LocalDateTime createdDate;
     private long questionId;
 
-    public Answer(long answerId, String writer, String contents, LocalDateTime createdDate, long questionId) {
-        this.answerId = answerId;
+    public Answer(String writer, String contents, LocalDateTime createdDate, long questionId) {
         this.writer = writer;
         this.contents = contents;
         this.createdDate = createdDate;
