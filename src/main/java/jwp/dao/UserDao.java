@@ -1,6 +1,5 @@
 package jwp.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import core.jdbc.JdbcTemplate;
@@ -41,7 +40,6 @@ public class UserDao {
     }
 
     public List<User> findAll(){
-
         String sql = "SELECT * FROM Users";
         return (List<User>) jdbcTemplate.query(sql, preparedStatement -> {},
                 resultSet -> new User(
