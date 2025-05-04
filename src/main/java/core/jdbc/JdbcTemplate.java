@@ -1,21 +1,21 @@
 package core.jdbc;
 
-import jwp.dao.UserDao;
 import jwp.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateJdbcTemplate {
-    public void update(User user, UserDao userDao) throws SQLException {
+public abstract class JdbcTemplate {
+    public void update(User user) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String sql = userDao.createQueryForUpdate();
+        String sql = createQuery();
+
         try{
             connection = ConnectionManager.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            userDao.setValuesForUpdate(user, preparedStatement);
+            setValues(user, preparedStatement);
             preparedStatement.executeUpdate();
         } finally {
             if (preparedStatement != null) {
@@ -26,4 +26,6 @@ public class UpdateJdbcTemplate {
             }
         }
     }
+    public abstract String createQuery();
+    public abstract void setValues(User user, PreparedStatement preparedStatement) throws SQLException;
 }
