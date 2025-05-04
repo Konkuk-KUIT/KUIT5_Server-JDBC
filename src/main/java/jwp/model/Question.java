@@ -50,6 +50,4 @@ public class Question {
     public Integer getCountOfAnswer() {
         return countOfAnswer;
     }
-
-
 }
