@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class QuestionDao {
+public class QuestionDao{
 
     public Question insert(Question question) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
