@@ -18,11 +18,15 @@ public class UserDao {
             }
 
             @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setString(1,user.getUserId());
-                preparedStatement.setString(2,user.getPassword());
-                preparedStatement.setString(3,user.getName());
-                preparedStatement.setString(4,user.getEmail() );
+            public void setValues(PreparedStatement preparedStatement) {
+                try {
+                    preparedStatement.setString(1, user.getUserId());
+                    preparedStatement.setString(2, user.getPassword());
+                    preparedStatement.setString(3, user.getName());
+                    preparedStatement.setString(4, user.getEmail());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         jdbcTemplate.update();
@@ -38,15 +42,31 @@ public class UserDao {
             }
 
             @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setString(1, userId);
+            public void setValues(PreparedStatement preparedStatement) {
+                try {
+                    preparedStatement.setString(1, userId);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
 
+            }
+
+            @Override
+            public Object mapRow(ResultSet resultSet) {
+                try {
+                    return new User(resultSet.getString("userId"),
+                            resultSet.getString("password"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"));
+
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
 
-        return jdbcTemplate.readUser();
+        return jdbcTemplate.readOne();
     }
-
 
 
     public void update(User user) throws SQLException {
@@ -58,10 +78,14 @@ public class UserDao {
             }
 
             @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setString(1, user.getPassword());
-                preparedStatement.setString(2, user.getName());
-                preparedStatement.setString(3, user.getEmail());
+            public void setValues(PreparedStatement preparedStatement) {
+                try {
+                    preparedStatement.setString(1, user.getPassword());
+                    preparedStatement.setString(2, user.getName());
+                    preparedStatement.setString(3, user.getEmail());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
         jdbcTemplate.update();
@@ -80,8 +104,21 @@ public class UserDao {
             public void setValues(PreparedStatement preparedStatement) {
             }
 
+            @Override
+            public Object mapRow(ResultSet resultSet) {
+                try {
+                    return new User(resultSet.getString("userId"),
+                            resultSet.getString("password"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"));
+
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         };
 
-        return jdbcTemplate.readUsers();
+        return jdbcTemplate.readAll();
     }
 }

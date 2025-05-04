@@ -2,6 +2,7 @@ package core.jdbc;
 
 import jwp.model.User;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,33 +11,34 @@ import java.util.ArrayList;
 
 public abstract class SelectJdbcTemplate {
 
+    //Todo 제네릭 구현
 
+    public <T> ArrayList<T> readAll(){
+        ArrayList<T> ts = new ArrayList<>();
+        try {
+            try (Connection connection = ConnectionManager.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(createQuery());) {
+                setValues(preparedStatement);
+                try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                    while (resultSet.next()) {
+                        T t = (T)mapRow(resultSet);
+                        ts.add(t);
+                    }
 
-    public ArrayList<User> readUsers() throws SQLException {
-        ArrayList<User> users = new ArrayList<>();
-
-        String sql = createQuery();
-
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
-            setValues(preparedStatement);
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                while (resultSet.next()) {
-                    User user = getUser(resultSet);
-                    users.add(user);
                 }
-
             }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
-        return users;
+        return ts;
     }
 
 
-    public User readUser() throws SQLException {
-        ArrayList<User> users;
-        users = readUsers();
-        if (users.size() == 1) {
-            return users.getFirst();
+    public <T> T readOne() {
+        ArrayList<T> ts;
+        ts = readAll();
+        if (ts.size() == 1) {
+            return ts.getFirst();
         }
 
         return null;
@@ -44,15 +46,10 @@ public abstract class SelectJdbcTemplate {
 
     public abstract String createQuery();
 
-    public abstract void setValues(final PreparedStatement preparedStatement) throws SQLException;
+    public abstract void setValues(final PreparedStatement preparedStatement);
 
-    private User getUser(ResultSet resultSet) throws SQLException {
-        return new User(resultSet.getString("userId"),
-                resultSet.getString("password"),
-                resultSet.getString("name"),
-                resultSet.getString("email"));
 
-    }
 
+    public abstract Object mapRow(ResultSet resultSet);
 
 }
