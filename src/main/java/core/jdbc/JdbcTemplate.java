@@ -65,7 +65,7 @@ public class JdbcTemplate {
         if (result.size() == 0)
             return null;
 
-        return result.getFirst();
+        return result.get(0);
     }
 
 
