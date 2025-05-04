@@ -8,130 +8,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.jdbc.ConnectionManager;
+import core.jdbc.JdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
-    public void insert(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            String sql = "INSERT INTO Users VALUES (?, ?, ?, ?)"; // ? <- 파라미터처럼 사용 가능
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setString(1, user.getUserId());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getName());
-            preparedStatement.setString(4, user.getEmail());
-
-            preparedStatement.executeUpdate();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
-        }
+    public void insert(User user) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "INSERT INTO Users VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, ps -> {
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getEmail());
+        });
     }
 
-    public User findByUserId(String userId) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+    public User findByUserId(String userId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Users WHERE userId = ?";
-
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, userId);
-            resultSet = preparedStatement.executeQuery();
-
-            User user = null;
-            if (resultSet.next()) {
-                user = new User(resultSet.getString("userId"), resultSet.getString("password"),
-                        resultSet.getString("name"),
-                        resultSet.getString("email"));
-                return user;
-            }
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
-        }
-        return null;
+        return (User) jdbcTemplate.queryForObject(sql, ps -> ps.setString(1, userId),
+                rs -> new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"))
+        );
     }
 
-    public void update(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String sql = "UPDATE Users SET password = ? ,name = ?, email = ? WHERE userId = ?";
-
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setString(1, user.getPassword());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getUserId());
-
-            preparedStatement.executeUpdate();
-
-        } finally {
-
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
-        }
+    public void update(User user) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE Users SET password = ?, name = ?, email = ?";
+        jdbcTemplate.update(sql, ps -> {
+            ps.setString(1, user.getPassword());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getEmail());
+        });
     }
 
-    public List<User> findAll() throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        List<User> users = new ArrayList<>();
-        ResultSet resultSet = null;
-
+    public List<User> findAll() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Users";
-
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                User user = new User(resultSet.getString("userId"),
-                        resultSet.getString("password"),
-                        resultSet.getString("name"),
-                        resultSet.getString("email"));
-
-                users.add(user);
-            }
-
-        } finally {
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-
-            if (connection != null) {
-                connection.close();
-            }
-        }
-        return users;
+        return (List<User>) jdbcTemplate.query(sql, ps -> {
+                },
+                rs -> new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"))
+        );
     }
 }
