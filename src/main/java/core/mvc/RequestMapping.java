@@ -1,6 +1,10 @@
 package core.mvc;
 
 import jwp.controller.*;
+import jwp.controller.qna.AddAnswerController;
+import jwp.controller.qna.CreateQuestionController;
+import jwp.controller.qna.CreateQuestionFormController;
+import jwp.controller.qna.ShowController;
 
 import java.util.HashMap;
 import java.util.Map;
