@@ -1,15 +1,11 @@
 package jwp.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import core.jdbc.ConnectionManager;
 import core.jdbc.JdbcTemplate;
-import core.jdbc.SelectJdbcTemplate;
 import jwp.model.User;
 
 
@@ -28,13 +24,18 @@ public class UserDao {
                 preparedStatement.setString(3, user.getName());
                 preparedStatement.setString(4, user.getEmail());
             }
+
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return null;
+            }
         };
         jdbcTemplate.update();
     }
 
     public User findByUserId(String userId) throws SQLException {
 
-        SelectJdbcTemplate jdbcTemplate=new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate=new JdbcTemplate() {
             @Override
             public String createQuery() {
                 return "SELECT * FROM Users WHERE userId = ?";
@@ -67,6 +68,11 @@ public class UserDao {
                 preparedStatement.setString(2, user.getName());
                 preparedStatement.setString(3, user.getEmail());
             }
+
+            @Override
+            public Object mapRow(ResultSet resultSet) throws SQLException {
+                return null;
+            }
         };
         jdbcTemplate.update();
     }
@@ -75,7 +81,7 @@ public class UserDao {
 
     public List<User> findAll() throws SQLException {
 
-        SelectJdbcTemplate jdbcTemplate= new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate= new JdbcTemplate() {
             @Override
             public String createQuery() {
                 return "SELECT * FROM Users";
