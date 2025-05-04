@@ -1,9 +1,6 @@
 package core.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +12,25 @@ public class JdbcTemplate<T> {
 
             pstmtSetter.setValues(pstmt);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Question
+    public void update(String sql, PreparedStatementSetter pstmtSetter, KeyHolder keyHolder)  {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmtSetter.setValues(pstmt);
+            pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                keyHolder.setId(rs.getLong(1));
+            }
+            rs.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

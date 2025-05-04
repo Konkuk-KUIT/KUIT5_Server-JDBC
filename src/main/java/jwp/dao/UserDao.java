@@ -29,12 +29,12 @@ public class UserDao {
         PreparedStatementSetter pstmtSetter = pstmt ->
                 pstmt.setString(1, userId);
 
-        RowMapper rowMapper = rs -> new User(rs.getString("userId"),
+        RowMapper<User> rowMapper = rs -> new User(rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"));
 
-        return (User) jdbcTemplate.queryForObject(sql, pstmtSetter, rowMapper);
+        return jdbcTemplate.queryForObject(sql, pstmtSetter, rowMapper);
     }
 
     public void update(User user) {
