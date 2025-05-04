@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="article-doc">
-                <p>${question.contents}</p>
+                <p>${question.content}</p>
             </div>
 
             <div class="article-util">
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="article-doc comment-doc">
-                                <p>${each.contents}</p>
+                                <p>${each.content}</p>
                             </div>
                             <div class="article-util">
                                 <ul class="article-util-list">

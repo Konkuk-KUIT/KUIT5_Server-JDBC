@@ -4,7 +4,6 @@ import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
 import jwp.model.Question;
 
-
 import java.util.List;
 
 public class QuestionDao {
@@ -18,7 +17,8 @@ public class QuestionDao {
             preparedStatement.setString(2, question.getTitle());
             preparedStatement.setString(3, question.getContents());
             preparedStatement.setString(4, String.valueOf(question.getCreatedDate()));
-            preparedStatement.setString(5, String.valueOf(question.getCountOfAnswer()));},keyHolder);
+            preparedStatement.setString(5, String.valueOf(question.getCountOfAnswer()));
+        }, keyHolder);
         return findByQuestionId(keyHolder.getId());
     }
 
@@ -26,7 +26,7 @@ public class QuestionDao {
         String sql = "SELECT * FROM Questions WHERE questionId = ?";
 
         return jdbcTemplate.queryForObject(sql, preparedStatement ->
-                preparedStatement.setString(1, String.valueOf(questionId)),
+                        preparedStatement.setString(1, String.valueOf(questionId)),
                 resultSet -> new Question(
                         resultSet.getLong("questionId"),
                         resultSet.getString("writer"),
@@ -39,7 +39,8 @@ public class QuestionDao {
     public List<Question> findAll() {
         String sql = "SELECT * FROM Questions";
 
-        return jdbcTemplate.query(sql, preparedStatementSetter->{},
+        return jdbcTemplate.query(sql, preparedStatementSetter -> {
+                },
                 resultSet -> new Question(
 
                         resultSet.getLong("questionId"),
@@ -50,5 +51,4 @@ public class QuestionDao {
                         resultSet.getInt("countOfAnswer")
                 ));
     }
-
 }
