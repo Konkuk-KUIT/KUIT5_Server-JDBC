@@ -2,6 +2,7 @@ package jwp.controller;
 
 import core.db.MemoryUserRepository;
 import core.mvc.Controller;
+import jwp.dao.UserDao;
 import jwp.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginController implements Controller {
+    UserDao userDao;
+
+    public LoginController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -17,7 +23,7 @@ public class LoginController implements Controller {
         String password = req.getParameter("password");
 
         User loginUser = new User(userId, password);
-        User user = MemoryUserRepository.getInstance().findUserById(userId);
+        User user = userDao.findByUserId(userId);
 
         if (user != null && user.isSameUser(loginUser)) {
             session.setAttribute("user", user);
