@@ -2,6 +2,7 @@ package jwp.model;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Question {
     private long questionId;
@@ -49,6 +50,10 @@ public class Question {
     }
 
     public Timestamp getCreatedDate() {
+        return Timestamp.valueOf(createdDate);
+    }
+
+    public Date getCreatedDateAsDate() {
         return Timestamp.valueOf(createdDate);
     }
 

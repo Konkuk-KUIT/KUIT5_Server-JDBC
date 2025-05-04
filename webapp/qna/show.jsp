@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <!doctype html>
 <html lang="ko">
@@ -19,8 +21,7 @@
                 </div>
                 <div class="article-header-text">
                     <span class="article-author-name">${question.writer}</span>
-                    <span class="article-header-time">${question.createdDate}</span>
-                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createdDate}"/>
+                    <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createdDateAsDate}"/>
                     <i class="icon-link"></i>
                 </div>
             </div>
@@ -92,7 +93,9 @@
 
                         	<input type="hidden" name="questionId" value="${question.questionId}">
                         	<div class="form-group col-lg-4" style="padding-top:10px;">
-                        		<input class="form-control" id="writer" name="writer" placeholder="이름">
+                        		<input class="form-control" id="writer" name="writer"
+                                       placeholder="이름"
+                                       value="${sessionScope.user.name}" readonly>
                         	</div>
                         	<div class="form-group col-lg-12">
                         		<textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
