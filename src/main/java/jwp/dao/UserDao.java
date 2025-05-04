@@ -9,30 +9,25 @@ import java.util.List;
 import java.util.Random;
 
 import core.jdbc.ConnectionManager;
+import core.jdbc.InsertJdbcTemplate;
+import core.jdbc.UpdateJdbcTemplate;
 import jwp.model.User;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String sql = "INSERT INTO Users VALUES (?,?,?,?)";
+        InsertJdbcTemplate jdbcTemplate = new InsertJdbcTemplate();
+        jdbcTemplate.insert(user, this);
+    }
 
-        try {
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, user.getUserId());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getName());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.executeUpdate();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
+    public void setValuesForInsert(User user, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user.getUserId());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getName());
+        preparedStatement.setString(4, user.getEmail());
+    }
+
+    public String createQueryForInsert() {
+        return "INSERT INTO Users VALUES (?,?,?,?)";
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -68,28 +63,18 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String sql = "UPDATE Users SET password=?, name=?, email=?";
-
-        try{
-            connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, user.getPassword());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.executeUpdate();
-
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
+        UpdateJdbcTemplate jdbcTemplate = new UpdateJdbcTemplate();
+        jdbcTemplate.update(user, this);
+    }
+    public void setValuesForUpdate(User user, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user.getPassword());
+        preparedStatement.setString(2, user.getName());
+        preparedStatement.setString(3, user.getEmail());
     }
 
+    public String createQueryForUpdate() {
+        return "UPDATE Users SET password=?, name=?, email=?";
+    }
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
         Connection connection = null;
