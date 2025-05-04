@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
+@WebServlet(name = "dispatcher", urlPatterns = "/*", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
     private RequestMapping requestMapping;
     private static final String REDIRECT_PREFIX = "redirect:";
@@ -20,8 +20,11 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+
         String url = req.getRequestURI();
+        System.out.println("11"+url);
         Controller controller = requestMapping.getController(url);
+
         try {
             String viewName = controller.execute(req, resp);
             move(viewName, req, resp);
