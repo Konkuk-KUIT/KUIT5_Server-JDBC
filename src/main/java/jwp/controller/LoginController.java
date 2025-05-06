@@ -1,28 +1,30 @@
 package jwp.controller;
 
-import core.db.MemoryUserRepository;
-import core.mvc.Controller;
-import jwp.model.User;
+import core.mvc.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LoginController implements Controller {
+import jwp.dao.UserDao;
+import jwp.model.User;
+
+public class LoginController extends AbstractController {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        HttpSession session = req.getSession();
-        String userId = req.getParameter("userId");
-        String password = req.getParameter("password");
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
 
         User loginUser = new User(userId, password);
-        User user = MemoryUserRepository.getInstance().findUserById(userId);
+        UserDao userDao = new UserDao();
+        User user = userDao.findByUserId(userId);
 
         if (user != null && user.isSameUser(loginUser)) {
             session.setAttribute("user", user);
-            return "redirect:/";
+            return jspView("redirect:/");
         }
-        return "redirect:/user/loginFailed";
+        return jspView("redirect:/user/loginFailed");
     }
 }

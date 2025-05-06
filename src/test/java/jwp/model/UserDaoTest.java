@@ -35,7 +35,6 @@ public class UserDaoTest {
         saveUser();
         UserDao userDao = new UserDao();
         User findUser = Assertions.assertDoesNotThrow(() -> userDao.findByUserId(user.getUserId()));
-
         Assertions.assertEquals(findUser.getUserId(), user.getUserId());
     }
 
