@@ -1,18 +1,17 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
+import core.mvc.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.ModelAndView;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
-public class CreateQuestionController implements Controller {
+public class CreateQuestionController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         QuestionDao questionDao = new QuestionDao();
         Question question = new Question(
                 request.getParameter("writer"),
@@ -20,6 +19,6 @@ public class CreateQuestionController implements Controller {
                 request.getParameter("contents"));
         Question savedQuestion = questionDao.insert(question);
         System.out.println("saved question id= " + savedQuestion.getQuestionId());
-        return new JspView("redirect:/");
+        return jspView("redirect:/");
     }
 }
