@@ -25,7 +25,7 @@ public class ResourceFilter implements Filter {
     private RequestDispatcher defaultRequestDispatcher;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         this.defaultRequestDispatcher = filterConfig.getServletContext().getNamedDispatcher("default");
     }
 
