@@ -1,13 +1,7 @@
 package jwp.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import core.jdbc.ConnectionManager;
 import core.jdbc.JdbcTemplate;
 import jwp.model.User;
 
@@ -26,7 +20,7 @@ public class UserDao {
     public User findByUserId(String userId) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Users WHERE userId = ?";
-        return (User) jdbcTemplate.queryForObject(sql, ps -> ps.setString(1, userId),
+        return jdbcTemplate.queryForObject(sql, ps -> ps.setString(1, userId),
                 rs -> new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"))
         );
     }
@@ -44,8 +38,7 @@ public class UserDao {
     public List<User> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT * FROM Users";
-        return (List<User>) jdbcTemplate.query(sql, ps -> {
-                },
+        return jdbcTemplate.query(sql, ps -> {},
                 rs -> new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"))
         );
     }
