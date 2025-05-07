@@ -50,4 +50,8 @@ public class Question {
     public Integer getCountOfAnswer() {
         return countOfAnswer;
     }
+
+    public void increaseCountOfAnswer() {
+        countOfAnswer++;
+    }
 }

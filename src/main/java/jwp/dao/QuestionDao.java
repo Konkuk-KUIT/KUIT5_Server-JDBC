@@ -72,7 +72,16 @@ public class QuestionDao {
                         resultSet.getTimestamp("createdDate"),resultSet.getInt("countOfAnswer"));
             }
         };
-        return (List<Question>)jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.query(sql, preparedStatementSetter, rowMapper);
+    }
 
+    public void updateCountOfAnswer(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS SET countOfAnswer=? WHERE questionId=?";
+        PreparedStatementSetter pstmtSetter = pstmt -> {
+            pstmt.setInt(1, question.getCountOfAnswer());
+            pstmt.setLong(2, question.getQuestionId());
+        };
+        jdbcTemplate.update(sql, pstmtSetter);
     }
 }

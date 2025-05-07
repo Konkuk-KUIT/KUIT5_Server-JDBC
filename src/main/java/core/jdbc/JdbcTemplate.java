@@ -40,7 +40,7 @@ public class JdbcTemplate {
     }
 
 
-    public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+    public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -70,8 +70,8 @@ public class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
-        List result = query(sql, preparedStatementSetter, rowMapper);
+    public <T> T queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
+        List<T> result = query(sql, preparedStatementSetter, rowMapper);
         if(result.size() == 0)
             return null;
         return result.get(0);
