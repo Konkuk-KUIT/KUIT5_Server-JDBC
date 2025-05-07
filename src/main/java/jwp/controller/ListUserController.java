@@ -2,6 +2,8 @@ package jwp.controller;
 
 import core.db.MemoryUserRepository;
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import jwp.dao.UserDao;
 import jwp.util.UserSessionUtils;
 
@@ -13,12 +15,12 @@ public class ListUserController implements Controller {
     private final UserDao userDao = new UserDao();
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        HttpSession session = req.getSession();
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
         if (UserSessionUtils.isLogined(session)) {
-            req.setAttribute("users", userDao.findAll());
-            return "/user/list.jsp";
+            request.setAttribute("users", userDao.findAll());
+            return new JspView("/user/list.jsp");
         }
-        return "redirect:/user/loginForm";
+        return new JspView("redirect:/user/loginForm");
     }
 }

@@ -1,6 +1,8 @@
 package jwp.controller;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
 import jwp.model.Answer;
@@ -15,11 +17,11 @@ public class ShowQuestionController implements Controller {
     private final AnswerDao answerDao = new AnswerDao();
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Question question = questionDao.findByQuestionId(Long.parseLong(req.getParameter("questionId")));
         List<Answer> answers = answerDao.findAllByQuestionId(Long.parseLong(req.getParameter("questionId")));
         req.setAttribute("question", question);
         req.setAttribute("answers", answers);
-        return "/qna/show.jsp";
+        return new JspView("/qna/show.jsp");
     }
 }

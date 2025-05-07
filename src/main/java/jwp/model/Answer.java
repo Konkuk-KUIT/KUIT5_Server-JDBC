@@ -20,6 +20,12 @@ public class Answer {
         this.questionId = questionId;
     }
 
+    public Answer(Long questionId, String writer, String contents) {
+        this.questionId = questionId;
+        this.writer = writer;
+        this.contents = contents;
+    }
+
     public Long getAnswerId() {
         return answerId;
     }

@@ -5,6 +5,8 @@ import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
 import jwp.model.Question;
 import jwp.model.User;
+import jwp.util.KeyHolder;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,9 +28,9 @@ public class QuestionDao {
                 preparedStatement.setInt(5, question.getCountOfAnswer());
             }
         };
-
-        jdbcTemplate.update(sql, preparedStatementSetter);
-        return findByQuestionId(question.getQuestionId());
+        KeyHolder keyHolder = new KeyHolder();
+        jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
+        return findByQuestionId(keyHolder.getId());
     }
 
     public Question findByQuestionId(Long questionId) throws SQLException {
@@ -94,6 +96,19 @@ public class QuestionDao {
                 preparedStatement.setString(1, question.getTitle());
                 preparedStatement.setString(2, question.getContents());
                 preparedStatement.setLong(3, question.getCountOfAnswer());
+            }
+        };
+
+        jdbcTemplate.update(sql, preparedStatementSetter);
+    }
+
+    public void increaseCountOfAnswer(Long questionId) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE Questions SET countOfAnswer += 1 WHERE questionId = ?";
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setLong(1, questionId);
             }
         };
 

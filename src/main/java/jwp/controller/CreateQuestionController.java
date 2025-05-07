@@ -1,6 +1,8 @@
 package jwp.controller;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 import jwp.model.User;
@@ -12,13 +14,13 @@ public class CreateQuestionController implements Controller {
     private final QuestionDao questionDao = new QuestionDao();
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Question question = new Question(
-                req.getParameter("writer"),
-                req.getParameter("title"),
-                req.getParameter("contents")
+                request.getParameter("contents"),
+                request.getParameter("title"),
+                request.getParameter("writer")
         );
         questionDao.insert(question);
-        return "redirect:/";
+        return new JspView("redirect:/");
     }
 }

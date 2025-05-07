@@ -8,19 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate{
-    private final KeyHolder holder = new KeyHolder();
-
     public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws SQLException {
         try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(String sql, PreparedStatementSetter preparedStatementSetter, KeyHolder holder) throws SQLException {
+        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            preparedStatementSetter.setValues(preparedStatement);
+            preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if ( rs instanceof Number && rs.next()) {
+            if (rs.next()){
                 holder.setId(rs.getLong(1));
             }
             rs.close();
-        } catch (SQLException e) {
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
     }

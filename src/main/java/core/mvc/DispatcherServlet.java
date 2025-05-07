@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/")
-//@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
+@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
     private RequestMapping requestMapping;
     private static final String REDIRECT_PREFIX = "redirect:";
@@ -20,35 +19,21 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String url = req.getRequestURI();
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String url = request.getRequestURI();
         Controller controller = requestMapping.getController(url);
 
         if (controller == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         try {
-            String viewName = controller.execute(req, resp);
-            if (viewName == null || viewName.isEmpty()) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "요청한 경로를 찾을 수 없습니다.");
-                return;
-            }
-
-            move(viewName, req, resp);
+            View view = controller.execute(request, response);
+            view.render(request, response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ServletException(e.getMessage());
         }
-    }
-
-    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        if (viewName.startsWith(REDIRECT_PREFIX)) {
-            resp.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
-            return;
-        }
-        RequestDispatcher rd = req.getRequestDispatcher(viewName);
-        rd.forward(req, resp);
     }
 }
