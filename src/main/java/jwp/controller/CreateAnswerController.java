@@ -2,6 +2,7 @@ package jwp.controller;
 
 import core.mvc.Controller;
 import core.mvc.JsonView;
+import core.mvc.ModelAndView;
 import core.mvc.View;
 import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
@@ -16,7 +17,7 @@ public class CreateAnswerController implements Controller {
     private final QuestionDao questionDao = new QuestionDao();
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Answer answer = new Answer(
                 Long.parseLong(request.getParameter("questionId")),
                 request.getParameter("writer"),
@@ -30,6 +31,7 @@ public class CreateAnswerController implements Controller {
 
         request.setAttribute("answer", answer);
 
-        return new JsonView();
+        return new ModelAndView(new JsonView())
+                .addObject("answer", answer);
     }
 }
