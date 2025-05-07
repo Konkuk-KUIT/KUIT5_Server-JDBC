@@ -16,7 +16,6 @@ public class CreateQuestionController implements Controller {
                 req.getParameter("title"),
                 req.getParameter("contents"));
         Question savedQuestion = questionDao.insert(question);
-        System.out.println("saved question id= " + savedQuestion.getQuestionId());
         return "redirect:/";
     }
 }

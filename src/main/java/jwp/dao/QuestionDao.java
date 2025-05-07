@@ -32,7 +32,7 @@ public class QuestionDao {
         PreparedStatementSetter preparedStatementSetter = pstmt -> {
             pstmt.setString(1, question.getWriter());
             pstmt.setString(2, question.getTitle());
-            pstmt.setString(3, question.getContent());
+            pstmt.setString(3, question.getContents());
             pstmt.setTimestamp(4, question.getCreatedDate());
         };
         KeyHolder keyHolder = new KeyHolder();

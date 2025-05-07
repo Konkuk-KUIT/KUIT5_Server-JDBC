@@ -8,24 +8,24 @@ public class Question {
     private int questionId;
     private String writer;
     private String title;
-    private String content;
+    private String contents;
     private Timestamp createdDate;
     private int countOfAnswer;
 
-    public Question(int questionId, String writer, String title, String content, Timestamp createdDate,
+    public Question(int questionId, String writer, String title, String contents, Timestamp createdDate,
                     int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.createdDate = createdDate;
         this.countOfAnswer = countOfAnswer;
     }
 
-    public Question(String writer, String title, String content) {
+    public Question(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.createdDate = Timestamp.from(Instant.now());
         this.countOfAnswer = 0;
     }
@@ -42,8 +42,8 @@ public class Question {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
     public Timestamp getCreatedDate() {
