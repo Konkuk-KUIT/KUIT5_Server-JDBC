@@ -4,18 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ForwardController implements Controller {
+    private final String path;
 
-    private final String forwardUrl;
-
-    public ForwardController(String forwardUrl) {
-        this.forwardUrl = forwardUrl;
-        if (forwardUrl == null) {
-            throw new NullPointerException("forwardUrl is null");
-        }
+    public ForwardController(String path) {
+        this.path = path;
     }
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return forwardUrl;
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        return new ModelAndView(new JspView(path));
     }
 }
