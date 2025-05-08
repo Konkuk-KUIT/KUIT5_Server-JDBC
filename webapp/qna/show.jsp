@@ -89,13 +89,18 @@
                     </c:forEach>
                     <div class="answerWrite">
                         <form class="submit-write">
+                            <input type="hidden" name="questionId" value="${question.questionId}">
+                            <input type="hidden" name="writer" value="${sessionScope.user.name}">
+
                             <div class="form-group" style="padding:14px;">
-                                <textarea class="form-control" placeholder="Update your status"></textarea>
+                                <textarea class="form-control" name="contents" placeholder="답변 내용을 입력하세요"></textarea>
                             </div>
+
                             <button class="btn btn-primary pull-right" type="button">답변하기</button>
                             <div class="clearfix" />
                         </form>
                     </div>
+
 
                 </div>
             </div>
@@ -132,8 +137,10 @@
         </div>
     </article>
 </script>
-<script src="/js/jquery-2.2.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 <script src="/js/scripts.js"></script>
+
+
 </body>
 </html>

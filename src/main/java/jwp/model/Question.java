@@ -25,4 +25,8 @@ public class Question {
     public String getContents() { return contents; }
     public Timestamp getCreatedDate() { return createdDate; }
     public int getCountOfAnswer() { return countOfAnswer; }
+    public void increaseCountOfAnswer() {
+        countOfAnswer++;
+    }
+
 }

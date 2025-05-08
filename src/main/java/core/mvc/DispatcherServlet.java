@@ -20,10 +20,18 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String url = req.getRequestURI();
-        Controller controller = requestMapping.getController(url);
+        String path = req.getRequestURI().replace(req.getContextPath(), "");
+        Controller controller = requestMapping.getController(path);
+
+        if (controller == null) {
+            throw new ServletException("No controller found for path: " + path);
+        }
+
         try {
             String viewName = controller.execute(req, resp);
+            if (viewName == null) {
+                return;
+            }
             move(viewName, req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());

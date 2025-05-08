@@ -56,7 +56,7 @@ public  class JdbcTemplate {
 
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    holder.setId((int) rs.getLong(1));
+                    holder.setId(rs.getLong(1));
                 }
             }
 
@@ -65,11 +65,6 @@ public  class JdbcTemplate {
         }
     }
 
-
-
-    //public abstract String createQuery();
-
-    //public abstract void setValues(PreparedStatement preparedStatement)throws SQLException;
     public List query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
         Connection connection=null;
         PreparedStatement preparedStatement=null;
@@ -99,7 +94,6 @@ public  class JdbcTemplate {
         }
     }
 
-    //public abstract Object mapRow(ResultSet resultSet) throws SQLException;
     public Object queryForObject(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper rowMapper) throws SQLException {
         List result = query(sql,preparedStatementSetter,rowMapper);
         if (result.size() == 0) {
