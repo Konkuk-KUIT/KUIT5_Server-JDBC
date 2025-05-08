@@ -15,6 +15,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 public class UserDaoTest {
 
     User user = new User("kongoose", "password", "건구스", "Kongoose@email.com");
+    //User user = new User("kongoose", "password", "name", "javajigi@email.com");
 
     @BeforeEach
     public void setup() {
@@ -26,15 +27,15 @@ public class UserDaoTest {
     @Test
     public void insertTest() {
         User user = new User("kongoose", "password", "건구스", "Kongoose@email.com");
-        UserDao userDao = new UserDao();
-        Assertions.assertDoesNotThrow(() -> userDao.insert(user));
+//        UserDao userDao = new UserDao();
+        Assertions.assertDoesNotThrow(() -> UserDao.getInstance().insert(user));
     }
 
     @Test
     public void selectTest() {
         saveUser();
-        UserDao userDao = new UserDao();
-        User findUser = Assertions.assertDoesNotThrow(() -> userDao.findByUserId(user.getUserId()));
+//        UserDao userDao = new UserDao();
+        User findUser = Assertions.assertDoesNotThrow(() -> UserDao.getInstance().findByUserId(user.getUserId()));
 
         Assertions.assertEquals(findUser.getUserId(), user.getUserId());
     }
@@ -42,8 +43,8 @@ public class UserDaoTest {
     @Test
     public void selectAllTest() {
         saveUser();
-        UserDao userDao = new UserDao();
-        List<User> findUsers = Assertions.assertDoesNotThrow(() -> userDao.findAll());
+//        UserDao userDao = new UserDao();
+        List<User> findUsers = Assertions.assertDoesNotThrow(() -> UserDao.getInstance().findAll());
 
         Assertions.assertEquals(findUsers.size(), 2);
     }
@@ -51,21 +52,22 @@ public class UserDaoTest {
     @Test
     public void updateTest() {
         saveUser();
-        UserDao userDao = new UserDao();
+//        UserDao userDao = new UserDao();
         User updateUser = new User("kongoose", "updatePassword", "updateName", "update@email.com");
 
-        Assertions.assertDoesNotThrow(() -> userDao.update(updateUser));
-        User findUser = Assertions.assertDoesNotThrow(() -> userDao.findByUserId(updateUser.getUserId()));
+        Assertions.assertDoesNotThrow(() -> UserDao.getInstance().update(updateUser));
+        User findUser = Assertions.assertDoesNotThrow(() -> UserDao.getInstance().findByUserId(updateUser.getUserId()));
         Assertions.assertEquals(findUser, updateUser);
     }
 
     private static void saveUser() {
         User user = new User("kongoose", "password", "name", "javajigi@email.com");
-        UserDao userDao = new UserDao();
-        try {
-            userDao.insert(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        UserDao userDao = new UserDao();
+//        try {
+//            userDao.insert(user);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+        UserDao.getInstance().insert(user);
     }
 }
