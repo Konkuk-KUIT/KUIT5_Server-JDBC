@@ -1,4 +1,7 @@
+import org.apache.catalina.Context;
+import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.webresources.StandardRoot;
 
 
 import java.io.File;
@@ -13,7 +16,18 @@ public class WebServerLauncher {
         tomcat.setPort(8080);
         tomcat.getConnector();
 
-        tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
+        Context ctx = tomcat.addWebapp("", new File("webapp").getAbsolutePath());
+
+// 여기가 핵심
+        ctx.setResources(new StandardRoot(ctx));
+        ctx.getResources().createWebResourceSet(
+                WebResourceRoot.ResourceSetType.PRE,
+                "/WEB-INF/classes",
+                new File("build/classes/java/main").getAbsolutePath(),
+                null,
+                "/"
+        );
+
         logger.info("configuring app with basedir: " + new File(webappDirLocation).getAbsolutePath());
 
         tomcat.start();
