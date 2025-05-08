@@ -1,17 +1,21 @@
 package jwp.controller;
 
-import core.mvc.AbstractController;
-import core.mvc.view.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import core.mvc.Controller;
+import java.sql.SQLException;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 
-public class LogoutController extends AbstractController {
+public class LogoutController implements Controller {
+    private HttpSession session;
 
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    @Override
+    public String execute(Map<String, String> params, Map<String, Object> model) throws SQLException {
         session.removeAttribute("user");
-        return jspView("redirect:/");
+        return "redirect:/";
     }
 }

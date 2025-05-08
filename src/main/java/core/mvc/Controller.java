@@ -1,9 +1,17 @@
 package core.mvc;
 
-import core.mvc.view.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
+import jwp.model.User;
 
 public interface Controller {
-    ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    default void setSession(HttpSession session) {
+    }
+
+    default void setUserFromSession(User user) {
+    }
+
+    String execute(Map<String, String> params, Map<String, Object> model) throws SQLException;
 }

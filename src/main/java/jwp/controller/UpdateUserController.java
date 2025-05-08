@@ -1,23 +1,23 @@
 package jwp.controller;
 
-import core.mvc.AbstractController;
-import core.mvc.view.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import core.mvc.Controller;
+import java.sql.SQLException;
+import java.util.Map;
 import jwp.dao.UserDao;
 import jwp.model.User;
 
-public class UpdateUserController extends AbstractController {
+public class UpdateUserController implements Controller {
+    private final UserDao userDao = new UserDao();
 
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String execute(Map<String, String> params, Map<String, Object> model) throws SQLException {
         User modifiedUser = new User(
-                request.getParameter("userId"),
-                request.getParameter("password"),
-                request.getParameter("name"),
-                request.getParameter("email"));
-        UserDao userDao = new UserDao();
+                params.get("userId"),
+                params.get("password"),
+                params.get("name"),
+                params.get("email"));
+
         userDao.update(modifiedUser);
-        return jspView("redirect:/user/list");
+        return "redirect:/user/list";
     }
 }

@@ -1,23 +1,27 @@
 package jwp.controller;
 
-import core.mvc.AbstractController;
-import core.mvc.view.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import core.mvc.Controller;
+import java.sql.SQLException;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import jwp.dao.UserDao;
 import jwp.util.UserSessionUtils;
 
-public class ListUserController extends AbstractController {
+public class ListUserController implements Controller {
     private final UserDao userDao = new UserDao();
+    private HttpSession session;
 
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
+
+    @Override
+    public String execute(Map<String, String> params, Map<String, Object> model) throws SQLException {
         if (UserSessionUtils.isLogined(session)) {
-            return jspView("/user/list.jsp")
-                    .addObject("users", userDao.findAll());
+            model.put("users", userDao.findAll());
+            return "/user/list.jsp";
         }
-        return jspView("redirect:/user/loginForm");
+        return "redirect:/user/loginForm";
     }
 }
