@@ -91,7 +91,7 @@
                         <form class="submit-write">
                             <input type="hidden" name="questionId" value="${question.questionId}">
                             <div class="form-group col-lg-4" style="padding-top:10px;">
-                                <input class="form-control" id="writer" name="writer" placeholder="이름">
+                                <input class="form-control" id="writer" name="writer" value=${sessionScope.user.name} readonly>
                             </div>
                             <div class="form-group col-lg-12">
                                 <textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
@@ -160,7 +160,7 @@
     //요청이 성공했을 때 아래 함수를 실행 시킴. 즉, 동적으로 화면 생성
     function onSuccess(json, status){
         var answerTemplate = $("#answerTemplate").html();
-        var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId, json.answerId);
+        var template = answerTemplate.format(json.answer.writer, new Date(json.answer.createdDate), json.answer.contents, json.answer.answerId, json.answer.answerId);
         $(".qna-comment-kuit-articles").prepend(template);
         var countOfAnswer = document.getElementsByTagName("strong").item(0);
         let number = parseInt(countOfAnswer.innerText,10);

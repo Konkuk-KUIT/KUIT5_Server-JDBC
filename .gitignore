@@ -39,3 +39,9 @@ out/
 .vscode/
 
 .env
+
+# Java class files
+*.class
+
+# IDE build output
+/webapp/WEB-INF/classes/
