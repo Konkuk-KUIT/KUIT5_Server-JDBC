@@ -1,19 +1,18 @@
 package jwp.controller;
 
-import core.mvc.Controller;
-import core.mvc.view.JspView;
-import core.mvc.view.View;
+import core.mvc.AbstractController;
+import core.mvc.view.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import jwp.dao.UserDao;
 import jwp.model.User;
 
-public class UpdateUserFormController implements Controller {
+public class UpdateUserFormController extends AbstractController {
     private final UserDao userDao = new UserDao();
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("userId");         // 수정되는 user
 
         User user = userDao.findByUserId(userId);
@@ -22,9 +21,9 @@ public class UpdateUserFormController implements Controller {
 
         if (user != null && value != null) {
             if (user.equals(value)) {            // 수정되는 user와 수정하는 user가 동일한 경우
-                return new JspView("/user/updateForm.jsp");
+                return jspView("/user/updateForm.jsp");
             }
         }
-        return new JspView("redirect:/");
+        return jspView("redirect:/");
     }
 }

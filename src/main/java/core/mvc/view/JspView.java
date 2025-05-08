@@ -1,6 +1,7 @@
 package core.mvc.view;
 
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,14 @@ public class JspView implements View {
     }
 
     @Override
-    public void render(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         if (viewName.startsWith(REDIRECT_PREFIX)) {
             response.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
             return;
+        }
+        for (String key : model.keySet()) {
+            request.setAttribute(key, model.get(key));
         }
         RequestDispatcher rd = request.getRequestDispatcher(viewName);
         rd.forward(request, response);
