@@ -2,6 +2,10 @@ package jwp.controller;
 
 import core.db.MemoryUserRepository;
 import core.mvc.Controller;
+
+import core.mvc.ModelAndView;
+import core.mvc.RedirectView;
+import jwp.dao.UserDao;
 import jwp.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         String userId = req.getParameter("userId");
         String password = req.getParameter("password");
@@ -21,8 +25,8 @@ public class LoginController implements Controller {
 
         if (user != null && user.isSameUser(loginUser)) {
             session.setAttribute("user", user);
-            return "redirect:/";
+            return new ModelAndView(String.valueOf(new RedirectView("/")));
         }
-        return "redirect:/user/loginFailed";
+        return new ModelAndView(String.valueOf(new RedirectView("/user/loginFailed")));
     }
 }
