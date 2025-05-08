@@ -95,4 +95,17 @@ public class QuestionDao{
 
         return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
+
+    public void updateCountOfAnswer(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+        String sql = "UPDATE Questions SET countOfAnswer = ? WHERE questionId = ? ";
+
+        PreparedStatementSetter pstmtSetter = preparedStatement -> {
+            preparedStatement.setInt(1, question.getCountOfAnswer());
+            preparedStatement.setInt(2, question.getQuestionId());
+        };
+
+        jdbcTemplate.update(sql, pstmtSetter);
+    }
 }

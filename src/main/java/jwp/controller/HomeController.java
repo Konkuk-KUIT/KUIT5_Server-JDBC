@@ -1,6 +1,8 @@
 package jwp.controller;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
@@ -11,13 +13,13 @@ import java.util.List;
 public class HomeController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         QuestionDao questionDao = new QuestionDao();
 
-        List<Question> questions= questionDao.findAll();
+        List<Question> questions = questionDao.findAll();
 
         req.setAttribute("questions", questions);
 
-        return "/home.jsp";
+        return new JspView("/home.jsp");
     }
 }

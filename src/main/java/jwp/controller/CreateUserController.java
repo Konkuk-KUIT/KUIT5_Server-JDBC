@@ -1,6 +1,8 @@
 package jwp.controller;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import jwp.dao.UserDao;
 import jwp.model.User;
 
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateUserController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         UserDao userDao = new UserDao();
 
         User user = new User(req.getParameter("userId"),
@@ -21,6 +23,6 @@ public class CreateUserController implements Controller {
         userDao.insert(user);
 
         System.out.println("user 회원가입 완료");
-        return "redirect:/user/list";
+        return new JspView("redirect:/user/list");
     }
 }

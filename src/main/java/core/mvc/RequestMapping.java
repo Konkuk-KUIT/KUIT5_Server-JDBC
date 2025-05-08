@@ -1,6 +1,9 @@
 package core.mvc;
 
 import jwp.controller.*;
+import jwp.controller.qna.AddAnswerController;
+import jwp.controller.qna.CreateQuestionFormController;
+import jwp.controller.qna.ShowController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +28,7 @@ public class RequestMapping {
         controllers.put("/qna/form",new CreateQuestionFormController());
         controllers.put("/qna/show", new ShowController());
         controllers.put("/qna/create", new CreateQuestionFormController());
+        controllers.put("/api/qna/addAnswer", new AddAnswerController());
 
     }
 
