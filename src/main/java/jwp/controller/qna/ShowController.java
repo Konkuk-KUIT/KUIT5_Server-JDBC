@@ -1,5 +1,7 @@
 package jwp.controller.qna;
 
+import core.mvc.Controller;
+import core.mvc.RequestMapping;
 import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import java.util.List;
@@ -10,11 +12,12 @@ import jwp.dao.QuestionDao;
 import jwp.model.Answer;
 import jwp.model.Question;
 
+@Controller
 public class ShowController extends AbstractController {
     private final QuestionDao questionDao = new QuestionDao();
     private final AnswerDao answerDao = new AnswerDao();
 
-    @Override
+    @RequestMapping("/qna/show")
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String questionId = req.getParameter("questionId");
         Question question = questionDao.findByQuestionId(Integer.parseInt(questionId));

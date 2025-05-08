@@ -10,13 +10,14 @@ import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
 import jwp.model.Answer;
 import jwp.model.Question;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AddAnswerController extends AbstractController {
     private final AnswerDao answerDao = new AnswerDao();
     private final QuestionDao questionDao = new QuestionDao();
 
-    @RequestMapping("/api/qna/addAnswer")
+    @RequestMapping(value = "/api/qna/addAnswer", method = RequestMethod.POST)
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Answer answer = new Answer(Integer.parseInt(req.getParameter("questionId")), req.getParameter("writer"),
                 req.getParameter("contents"));

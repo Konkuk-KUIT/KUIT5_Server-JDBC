@@ -1,17 +1,21 @@
 package jwp.controller;
 
+import core.mvc.Controller;
+import core.mvc.RequestMapping;
 import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jwp.dao.UserDao;
 import jwp.model.User;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+@Controller
 public class UpdateUserController extends AbstractController {
 
     private final UserDao userDao = new UserDao();
 
-    @Override
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         User modifiedUser = new User(
                 req.getParameter("userId"),

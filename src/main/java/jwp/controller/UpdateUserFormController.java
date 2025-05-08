@@ -1,5 +1,7 @@
 package jwp.controller;
 
+import core.mvc.Controller;
+import core.mvc.RequestMapping;
 import core.mvc.controller.AbstractController;
 import core.mvc.view.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -8,11 +10,12 @@ import javax.servlet.http.HttpSession;
 import jwp.dao.UserDao;
 import jwp.model.User;
 
+@Controller
 public class UpdateUserFormController extends AbstractController {
 
     private final UserDao userDao = new UserDao();
 
-    @Override
+    @RequestMapping("/user/updateForm")
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String userId = req.getParameter("userId");         // 수정되는 user
         User user = userDao.findByUserId(userId);

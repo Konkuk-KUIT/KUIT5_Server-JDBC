@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public @interface RequestMapping {
     String value() default "";
 
-    RequestMethod method() default RequestMethod.POST;
+    RequestMethod method() default RequestMethod.GET;
 }
