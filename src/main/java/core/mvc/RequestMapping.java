@@ -1,6 +1,10 @@
 package core.mvc;
 
 import jwp.controller.*;
+import jwp.controller.qna.AddAnswerController;
+import jwp.controller.qna.CreateQuestionController;
+import jwp.controller.qna.CreateQuestionFormController;
+import jwp.controller.qna.ShowController;
 import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
 import jwp.dao.UserDao;
@@ -30,6 +34,8 @@ public class RequestMapping {
         controllers.put("/qna/form", new CreateQuestionFormController());
         controllers.put("/qna/show", new ShowController(questionDao, answerDao));
         controllers.put("/qna/create", new CreateQuestionController(questionDao));
+
+        controllers.put("/api/qna/addAnswer", new AddAnswerController(answerDao,questionDao));
 
     }
 

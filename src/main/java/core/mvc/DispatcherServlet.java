@@ -20,13 +20,14 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("DispatcherServlet received URL: " + req.getRequestURI());
-        String url = req.getRequestURI();
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("DispatcherServlet received URL: " + request.getRequestURI());
+        String url = request.getRequestURI();
         Controller controller = requestMapping.getController(url);
         try {
-            String viewName = controller.execute(req, resp);
-            move(viewName, req, resp);
+            ModelAndView modelAndView = controller.execute(request, response);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(), request,response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ServletException(e.getMessage());

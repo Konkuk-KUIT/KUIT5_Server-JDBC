@@ -26,6 +26,10 @@ public class Question {
         this.countOfAnswer = countOfAnswer;
     }
 
+    public void increaseCountOfAnswer(){
+        this.countOfAnswer += 1;
+    }
+
     public Long getQuestionId() {
         return questionId;
     }

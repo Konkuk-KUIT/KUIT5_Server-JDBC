@@ -4,6 +4,7 @@
 <!doctype html>
 <html lang="ko">
 <%@ include file="/include/header.jspf" %>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <body>
 <%@ include file="/include/navigation.jspf" %>
 
@@ -88,13 +89,17 @@
                                 </article>
                             </c:forEach>
                             <div class="answerWrite">
-                                <form class="submit-write">
-        													<div class="form-group" style="padding:14px;">
-        														<textarea class="form-control" placeholder="Update your status"></textarea>
-        													</div>
-        													<button class="btn btn-primary pull-right" type="button">답변하기</button>
-        													<div class="clearfix" />
-        												</form>
+                                <form class="submit-write" action="/api/qna/addAnswer" method="POST">
+                                	<input type="hidden" name="questionId" value="${question.questionId}">
+                                	<div class="form-group col-lg-4" style="padding-top:10px;">
+                                		<input class="form-control" id="writer" name="writer" placeholder="이름">
+                                	</div>
+                                	<div class="form-group col-lg-12">
+                                		<textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
+                                	</div>
+                                		<input class="btn btn-success pull-right" type="submit" value="답변하기" />
+                                	<div class="clearfix" />
+                                </form>
                             </div>
 
                         </div>
@@ -132,7 +137,6 @@
         </div>
     </article>
 </script>
-<script src="/js/jquery-2.2.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/scripts.js"></script>
 </body>

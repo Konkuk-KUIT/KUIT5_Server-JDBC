@@ -5,6 +5,7 @@ import core.jdbc.JdbcTemplate;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
 import jwp.model.Question;
+import jwp.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,5 +72,20 @@ public class QuestionDao {
             return results.get(0);
         }
         return null;
+    }
+
+    public void updateCountOfAnswer(Question question) throws SQLException{
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE Questions SET countOfAnswer=? WHERE questionId=?";
+
+        KeyHolder keyHolder = new KeyHolder();
+        PreparedStatementSetter preparedStatementSetter = new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, question.getCountOfAnswer());
+                preparedStatement.setLong(2, question.getQuestionId());
+            }
+        };
+        jdbcTemplate.update(sql, preparedStatementSetter, keyHolder);
     }
 }
