@@ -1,9 +1,10 @@
 package core.mvc;
 
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class ForwardController implements Controller {
+public class ForwardController implements ControllerV2 {
 
     private final String forwardUrl;
 

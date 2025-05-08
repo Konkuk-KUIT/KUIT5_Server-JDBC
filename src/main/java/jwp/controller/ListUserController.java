@@ -1,13 +1,13 @@
 package jwp.controller;
 
-import core.mvc.Controller;
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import jwp.dao.UserDao;
 import jwp.util.UserSessionUtils;
 
-public class ListUserController implements Controller {
+public class ListUserController implements ControllerV2 {
     private final UserDao userDao = new UserDao();
     private HttpSession session;
 

@@ -4,11 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModelAndView {
-    private View view;
+    private String viewName;
     private Map<String, Object> model = new HashMap<>();
 
-    public ModelAndView(View view) {
-        this.view = view;
+    public ModelAndView(String viewName) {
+        this.viewName = viewName;
+    }
+
+    public ModelAndView(String viewName, Map<String, Object> model) {
+        this.viewName = viewName;
+        this.model = model;
     }
 
     public ModelAndView addObject(String key, Object value) {
@@ -16,8 +21,8 @@ public class ModelAndView {
         return this;
     }
 
-    public View getView() {
-        return view;
+    public String getViewName() {
+        return viewName;
     }
 
     public Map<String, Object> getModel() {

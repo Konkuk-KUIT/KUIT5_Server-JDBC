@@ -1,12 +1,12 @@
 package jwp.controller;
 
-import core.mvc.Controller;
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 import jwp.dao.UserDao;
 import jwp.model.User;
 
-public class CreateUserController implements Controller {
+public class CreateUserController implements ControllerV2 {
     private final UserDao userDao = new UserDao();
 
     @Override

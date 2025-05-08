@@ -1,11 +1,11 @@
 package jwp.controller;
 
-import core.mvc.Controller;
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 
-public class LogoutController implements Controller {
+public class LogoutController implements ControllerV2 {
     private HttpSession session;
 
     @Override

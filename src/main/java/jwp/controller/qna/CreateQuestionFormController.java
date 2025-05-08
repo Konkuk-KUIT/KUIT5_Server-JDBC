@@ -1,12 +1,12 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import jwp.util.UserSessionUtils;
 
-public class CreateQuestionFormController implements Controller {
+public class CreateQuestionFormController implements ControllerV2 {
     private HttpSession session;
 
     @Override

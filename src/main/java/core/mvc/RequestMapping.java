@@ -1,5 +1,6 @@
 package core.mvc;
 
+import core.mvc.controller.Controller;
 import java.util.HashMap;
 import java.util.Map;
 import jwp.controller.CreateUserController;

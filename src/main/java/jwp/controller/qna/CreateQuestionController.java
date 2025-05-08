@@ -1,12 +1,12 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
+import core.mvc.controller.ControllerV2;
 import java.sql.SQLException;
 import java.util.Map;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
-public class CreateQuestionController implements Controller {
+public class CreateQuestionController implements ControllerV2 {
     private final QuestionDao questionDao = new QuestionDao();
 
     @Override
