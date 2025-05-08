@@ -9,7 +9,7 @@ CREATE TABLE USERS (
                        PRIMARY KEY               (userId)
 );
 
-INSERT INTO USERS VALUES('admin', 'password', '박지원', 'admin@naver.com');
+INSERT INTO USERS VALUES('1', '1', '박지원', 'admin@naver.com');
 
 DROP TABLE IF EXISTS QUESTIONS;
 
