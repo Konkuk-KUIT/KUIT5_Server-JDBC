@@ -51,7 +51,7 @@ public class QuestionDao {
                         resultSet.getTimestamp("createdDate"),resultSet.getInt("countOfAnswer"));
             }
         };
-        return (Question) jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
     }
 
     public List<Question> findAll() throws SQLException {
