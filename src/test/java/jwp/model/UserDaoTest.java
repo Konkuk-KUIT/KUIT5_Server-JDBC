@@ -2,6 +2,8 @@ package jwp.model;
 
 
 import core.jdbc.ConnectionManager;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import jwp.dao.UserDao;
