@@ -2,7 +2,6 @@ package jwp.dao;
 
 import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
-import jwp.model.Question;
 
 import java.util.List;
 
