@@ -1,0 +1,52 @@
+package jwp.model;
+
+import java.sql.Timestamp;
+
+public class Answer {
+    Long answerId;
+    String writer;
+    String contents;
+    Timestamp createdDate;
+    Long questionId;
+
+    public Answer(Long answerId, String writer, String contents, Timestamp createdDate, Long questionId) {
+        this.answerId = answerId;
+        this.writer = writer;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.questionId = questionId;
+    }
+
+    public Answer(String writer, String contents, Timestamp createdDate, Long questionId) {
+        this.writer = writer;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.questionId = questionId;
+    }
+
+    public Answer(Long questionId, String writer, String contents) {
+        this.questionId = questionId;
+        this.writer = writer;
+        this.contents = contents;
+    }
+
+    public Long getAnswerId() {
+        return answerId;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+}
