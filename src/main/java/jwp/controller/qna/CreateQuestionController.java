@@ -1,6 +1,6 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
+import core.mvc.*;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 
@@ -8,15 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 
-public class CreateQuestionController implements Controller {
+public class CreateQuestionController extends AbstractController {
 
     private final QuestionDao questionDao = new QuestionDao();
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String writer = req.getParameter("writer");
-        String title = req.getParameter("title");
-        String contents = req.getParameter("contents");
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String writer = request.getParameter("writer");
+        String title = request.getParameter("title");
+        String contents = request.getParameter("contents");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         int countOfAnswer = 0;
 
@@ -24,6 +24,6 @@ public class CreateQuestionController implements Controller {
 
         questionDao.insert(question);
 
-        return "redirect:/";
+        return jspView("redirect:/");
     }
 }
