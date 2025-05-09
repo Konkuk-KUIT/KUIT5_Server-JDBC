@@ -1,8 +1,6 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import jwp.dao.QuestionDao;
 import jwp.model.Question;
 import jwp.util.UserSessionUtils;
@@ -13,16 +11,16 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class CreateQuestionFormController implements Controller {
+public class CreateQuestionFormController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (request.getMethod().equals("GET")) {
             HttpSession session = request.getSession();
             if (UserSessionUtils.isLogined(session)) {
-                return new JspView("/qna/form.jsp");
+                return jspView("/qna/form.jsp");
             }
-            return new JspView("redirect:/user/loginForm");
+            return jspView("redirect:/user/loginForm");
         }
 
         if (request.getMethod().equals("POST")) {
@@ -39,7 +37,7 @@ public class CreateQuestionFormController implements Controller {
             if (question == null) {
                 throw new NullPointerException("error occurred in creating question");
             }
-            return new JspView("redirect:/");
+            return jspView("redirect:/");
 
         }
 

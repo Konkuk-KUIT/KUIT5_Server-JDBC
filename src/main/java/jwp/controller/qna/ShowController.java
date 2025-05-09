@@ -1,8 +1,6 @@
 package jwp.controller.qna;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import jwp.dao.AnswerDao;
 import jwp.dao.QuestionDao;
 import jwp.model.Answer;
@@ -12,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class ShowController implements Controller {
+public class ShowController extends AbstractController {
 
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         QuestionDao questionDao = new QuestionDao();
         AnswerDao answerDao = new AnswerDao();
@@ -28,6 +26,6 @@ public class ShowController implements Controller {
         request.setAttribute("question", question);
         request.setAttribute("answers", answers);
 
-        return new JspView("/qna/show.jsp");
+        return jspView("/qna/show.jsp");
     }
 }
