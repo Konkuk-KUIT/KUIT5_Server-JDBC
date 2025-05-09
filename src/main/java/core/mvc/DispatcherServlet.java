@@ -19,8 +19,8 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getRequestURI().replace(req.getContextPath(), "");
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getRequestURI().replace(request.getContextPath(), "");
         Controller controller = requestMapping.getController(path);
 
         if (controller == null) {
@@ -28,23 +28,21 @@ public class DispatcherServlet extends HttpServlet {
         }
 
         try {
-            String viewName = controller.execute(req, resp);
-            if (viewName == null) {
-                return;
-            }
-            move(viewName, req, resp);
+            ModelAndView modelAndView= controller.execute(request, response);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(),request, response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ServletException(e.getMessage());
         }
     }
 
-    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void move(String viewName, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (viewName.startsWith(REDIRECT_PREFIX)) {
-            resp.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
+            response.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
             return;
         }
-        RequestDispatcher rd = req.getRequestDispatcher(viewName);
-        rd.forward(req, resp);
+        RequestDispatcher rd = request.getRequestDispatcher(viewName);
+        rd.forward(request, response);
     }
 }
