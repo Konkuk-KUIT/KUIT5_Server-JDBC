@@ -62,10 +62,6 @@ public class UserDaoTest {
     private static void saveUser() {
         User user = new User("kongoose", "password", "name", "javajigi@email.com");
         UserDao userDao = new UserDao();
-        try {
-            userDao.insert(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDao.insert(user);
     }
 }
