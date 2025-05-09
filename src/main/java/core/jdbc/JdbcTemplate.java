@@ -61,6 +61,7 @@ public class JdbcTemplate {
                                 RowMapper rowMapper) {
         List<T> result = query(sql, preparedStatementSetter, rowMapper);
         if (result.isEmpty()) {
+            System.out.println("null!!");
             return null;
         }
         return result.get(0);

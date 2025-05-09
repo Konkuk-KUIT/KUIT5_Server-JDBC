@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import jwp.model.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class UserDao {
 
@@ -57,8 +58,13 @@ public class UserDao {
                 );
             }
         };
-        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userId=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, preparedStatementSetter, rowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("결과가 없음: " + e.getMessage());
+            return null;
+        }
     }
 
     public List<User> findAll() throws SQLException {
