@@ -1,6 +1,6 @@
 package jwp.controller;
 
-import core.mvc.Controller;
+import core.mvc.*;
 import jwp.dao.QuestionDao;
 import jwp.dao.UserDao;
 import jwp.model.Question;
@@ -10,18 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 
-public class CreateQuestionController implements Controller {
+public class CreateQuestionController extends AbstractController {
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         QuestionDao questionDao = new QuestionDao();
 
 
         Question question = new Question(
                 questionDao.getNewQuestionId(),
-                req.getParameter("writer"),
-                req.getParameter("title"),
-                req.getParameter("contents"),
+                request.getParameter("writer"),
+                request.getParameter("title"),
+                request.getParameter("contents"),
                 new Timestamp(System.currentTimeMillis()),
                 0
                 );
@@ -30,6 +30,6 @@ public class CreateQuestionController implements Controller {
 
         System.out.println("질문 등록완료");
 
-        return "redirect:/";
+        return jspView("redirect:/");
     }
 }

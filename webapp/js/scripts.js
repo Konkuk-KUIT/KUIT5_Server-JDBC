@@ -18,7 +18,7 @@ function addAnswer(e) {
 //요청이 성공했을 때 아래 함수를 실행 시킴. 즉, 동적으로 화면 생성
 function onSuccess(json, status){
     var answerTemplate = $("#answerTemplate").html();
-    var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId, json.answerId);
+    var template = answerTemplate.format(json.answer.writer, new Date(json.answer.createdDate), json.answer.contents, json.answer.answerId, json.answer.answerId);
     $(".qna-comment-kuit-articles").prepend(template);
     var countOfAnswer = document.getElementsByTagName("strong").item(0);
     let number = parseInt(countOfAnswer.innerText,10);

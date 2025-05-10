@@ -19,30 +19,19 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String url = req.getRequestURI();
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String url = request.getRequestURI();
         Controller controller = requestMapping.getController(url);
         try {
-            String viewName = controller.execute(req, resp);
-            move(viewName, req, resp);
+
+            ModelAndView modelAndView = controller.execute(request, response);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(),request,response);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ServletException(e.getMessage());
         }
     }
 
-    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-
-        if (viewName == null || viewName.isEmpty()) {
-            System.out.println("null 받았따.");
-            return; // JSON 응답 등을 직접 처리한 경우
-        }
-
-        if (viewName.startsWith(REDIRECT_PREFIX)) {
-            resp.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
-            return;
-        }
-        RequestDispatcher rd = req.getRequestDispatcher(viewName);
-        rd.forward(req, resp);
-    }
 }
